@@ -1,2 +1,2 @@
-# Bludegan-ProyectoFinalBDA_Casting
+# ProyectoFinalBDA_Casting
 Proyecto Final Para la materia de BDA
