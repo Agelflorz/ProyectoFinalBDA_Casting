@@ -10,5 +10,7 @@ package DAO;
  * @author blude
  */
 public class DAO_Cliente {
+    //Clase DAO_Cliente
+    String Nombre;
     
 }
