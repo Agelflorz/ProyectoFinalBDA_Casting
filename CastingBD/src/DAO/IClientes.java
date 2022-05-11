@@ -5,10 +5,23 @@
  */
 package DAO;
 
+import java.util.List;
+import ObjectoNegocios.Cliente;
 /**
  *
  * @author blude
  */
 public interface IClientes {
+
+    public void agregar(Cliente cliente);
+
+    public void eliminar(String nombre);
+
+    public void BuscarNombre(String nombre);
+
+    void MostrarTodas();
+
+    public void actualizar(Cliente ClientesActualizado);
     
+    public void crearConexion();
 }

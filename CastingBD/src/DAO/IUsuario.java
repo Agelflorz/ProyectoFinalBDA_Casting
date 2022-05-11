@@ -5,10 +5,24 @@
  */
 package DAO;
 
+import ObjectoNegocios.Usuario;
+import java.util.List;
+
 /**
  *
- * @author blude
+ * @author blude y spide
  */
 public interface IUsuario {
+
+    public void agregar(Usuario cliente);
+
+    public void eliminar(int id);
+
+    public Usuario BuscarID(int id);
+
+    List<Usuario> MostrarTodas();
+
+    public void actualizar(Usuario UsuarioActualizado);
     
+    public void crearConexion();
 }

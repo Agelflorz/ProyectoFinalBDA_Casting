@@ -7,8 +7,8 @@ package Conexion;
 
 /**
  *
- * @author blude
+ * @author blude y spide
  */
 public interface IConexionBD {
-    
+    public void crearConexion();
 }

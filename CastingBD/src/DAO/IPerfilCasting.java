@@ -5,10 +5,24 @@
  */
 package DAO;
 
+import ObjectoNegocios.PerfilCasting;
+import java.util.List;
+
 /**
  *
  * @author blude
  */
 public interface IPerfilCasting {
     
+    public void agregar(PerfilCasting cliente);
+
+    public void eliminar(int id);
+
+    public PerfilCasting BuscarID(int id);
+
+    List<PerfilCasting> MostrarTodas();
+
+    public void actualizar(PerfilCasting PerfilActualizado);
+    
+    public void crearConexion();
 }
