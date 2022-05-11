@@ -19,7 +19,7 @@ public interface IClientes {
 
     public void BuscarNombre(String nombre);
 
-    void MostrarTodas();
+     List<Cliente> MostrarTodas();
 
     public void actualizar(Cliente ClientesActualizado);
     
