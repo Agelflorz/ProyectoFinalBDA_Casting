@@ -12,44 +12,50 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import DAO.Control;
 import DAO.DAO_Cliente;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author blude
  */
-public class FrmCliente extends javax.swing.JFrame {
+public class FrmRegistrarCliente extends javax.swing.JFrame {
+
     private Control control;
-   DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Cliente ClienteControl = new DAO_Cliente();
+
     /**
      * Creates new form FrmCliente
      */
-    public FrmCliente() {
+    public FrmRegistrarCliente() {
         initComponents();
         centrarVentana();
         cargarTabla();
     }
+
     private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-
+        
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-
+        
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
-    //Aqui nos quedamos
-    public void cargarTabla(){
+
+    //Aqui nos quedamos //Metodo para cargar la tabla
+    public void cargarTabla() {
         this.ClienteControl.crearConexion();
         List<Cliente> list = this.ClienteControl.MostrarTodas();
         System.out.println(list);
         DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
         model.setRowCount(0);
         //int rowCount = model.getRowCount();
-        list.forEach(cliente->{
+        list.forEach(cliente -> {
             model.addRow(new Object[]{
                 cliente.getIdCliente(),
                 cliente.getNombreEmpresa(),
@@ -59,6 +65,71 @@ public class FrmCliente extends javax.swing.JFrame {
                 cliente.getActividadCliente()
             });
         });
+    }
+
+    //Metodo Guardar Cliente
+    public void Guardar() {
+        int idCliente = Integer.parseInt(this.txtID.getText());
+        String NombreEmpresa = this.txtEmpresa.getText();
+        String telefono = this.txtTelefono.getText();
+        String Direccion = this.txtDireccion.getText();
+        String NombreContacto = this.txtContacto.getText();
+        String ActividadCliente = this.txtActividad.getText();
+        Cliente ClienteNew = new Cliente(idCliente, NombreEmpresa, telefono, Direccion, NombreContacto, ActividadCliente);
+        ClienteControl.agregar(ClienteNew);
+        
+    }
+
+    //Metodo para elimnar Cliente
+    public void Eliminar() {
+        int indice = this.tbl_Cliente.getSelectedRow();
+        if (indice != -1) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tbl_Cliente.getModel();
+            int idCliente = (int) modeloTabla.getValueAt(indice, 0);
+            ClienteControl.eliminar(idCliente);
+            JOptionPane.showMessageDialog(this, "El cliente se eliminó con exito.,",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
+                    + "por favor, seleccione una opción valida.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
+
+    //Metodo Buscar cliente(ID)
+    public void BuscarCliente() {
+        try {
+            Integer id = Integer.parseInt(this.txtBuscar.getText());
+            List<Cliente> list = this.ClienteControl.BuscarID(id);
+            DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
+            int rowCount = model.getRowCount();
+            model.setRowCount(0);
+            //int rowCount = model.getRowCount();
+            list.forEach(cliente -> {
+                model.addRow(new Object[]{
+                    cliente.getIdCliente(),
+                    cliente.getNombreEmpresa(),
+                    cliente.getTelefono(),
+                    cliente.getDireccion(),
+                    cliente.getNombreContacto(),
+                    cliente.getActividadCliente()
+                });
+            });
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se ha encontrado el ID del cliente.", "Confimación", JOptionPane.INFORMATION_MESSAGE);
+        }        
+    }
+
+    //Metodo Para Limpiar los txtfield
+    public void limpiarTextbox() {
+        txtID.setText("");
+        txtEmpresa.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        txtContacto.setText("");
+        txtActividad.setText("");
+        txtBuscar.setText("");
     }
 
     /**
@@ -74,12 +145,10 @@ public class FrmCliente extends javax.swing.JFrame {
         txtEmpresa = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         txtDireccion = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtContacto = new javax.swing.JTextField();
@@ -107,19 +176,32 @@ public class FrmCliente extends javax.swing.JFrame {
 
         jLabel4.setText("Direccion");
 
-        jLabel5.setText("Nombre");
-
         jLabel6.setText("Contacto");
 
         jLabel7.setText("Actividad");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btn_Editar.setText("Editar");
 
         btn_Eliminar.setText("Eliminar");
+        btn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EliminarActionPerformed(evt);
+            }
+        });
 
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +218,12 @@ public class FrmCliente extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
+            }
+        });
+
         tbl_Cliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -145,7 +233,7 @@ public class FrmCliente extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Double.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -157,6 +245,11 @@ public class FrmCliente extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbl_Cliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_ClienteMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbl_Cliente);
@@ -188,16 +281,18 @@ public class FrmCliente extends javax.swing.JFrame {
                         .addComponent(txtEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addGap(26, 26, 26))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtTelefono)
                             .addComponent(txtDireccion)
-                            .addComponent(txtNombre)
                             .addComponent(txtContacto)
                             .addComponent(txtActividad, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
@@ -251,19 +346,15 @@ public class FrmCliente extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
+                                .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel6)
                                     .addComponent(txtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtActividad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addGap(42, 42, 42)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnGuardar)
                                     .addComponent(btnLimpiar)))
@@ -286,8 +377,42 @@ public class FrmCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btn_BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BuscarActionPerformed
-        // TODO add your handling code here:
+        this.BuscarCliente();
     }//GEN-LAST:event_btn_BuscarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        Guardar();
+        cargarTabla();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        this.Eliminar();
+        cargarTabla();
+    }//GEN-LAST:event_btn_EliminarActionPerformed
+
+    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
+    }//GEN-LAST:event_jScrollPane1MouseClicked
+
+    private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked
+        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
+        String NomrbeEmpresa = model.getValueAt(tbl_Cliente.getSelectedRow(), 1).toString();
+        String Telefono = model.getValueAt(tbl_Cliente.getSelectedRow(), 2).toString();
+        String Direccion = model.getValueAt(tbl_Cliente.getSelectedRow(), 3).toString();
+        String NombreContacto = model.getValueAt(tbl_Cliente.getSelectedRow(), 4).toString();
+        String ActividadCliente = model.getValueAt(tbl_Cliente.getSelectedRow(), 5).toString();
+        int idCliente = Integer.parseInt(model.getValueAt(tbl_Cliente.getSelectedRow(), 0).toString());
+        txtID.setText(idCliente + "");
+        txtEmpresa.setText(NomrbeEmpresa);
+        txtTelefono.setText(Telefono);
+        txtDireccion.setText(Direccion);
+        txtContacto.setText(NombreContacto);
+        txtActividad.setText(ActividadCliente);
+    }//GEN-LAST:event_tbl_ClienteMouseClicked
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        this.limpiarTextbox();
+        this.cargarTabla();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,20 +431,21 @@ public class FrmCliente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmCliente().setVisible(true);
+                new FrmRegistrarCliente().setVisible(true);
             }
         });
     }
@@ -334,7 +460,6 @@ public class FrmCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -349,7 +474,6 @@ public class FrmCliente extends javax.swing.JFrame {
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEmpresa;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

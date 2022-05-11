@@ -10,9 +10,9 @@ package ObjectoNegocios;
  * @author blude
  */
 public class Cliente {
-    double idCliente;
+    int idCliente;
     String NombreEmpresa;
-    double Telefono;
+    String Telefono;
     String Direccion;
     String NombreContacto;
     String ActividadCliente;
@@ -20,7 +20,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(double idCliente, String NombreEmpresa, double Telefono, String Direccion, String NombreContacto, String ActividadCliente) {
+    public Cliente(int idCliente, String NombreEmpresa, String Telefono, String Direccion, String NombreContacto, String ActividadCliente) {
         this.idCliente = idCliente;
         this.NombreEmpresa = NombreEmpresa;
         this.Telefono = Telefono;
@@ -29,11 +29,11 @@ public class Cliente {
         this.ActividadCliente = ActividadCliente;
     }
 
-    public double getIdCliente() {
+    public int getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(double idCliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -45,11 +45,11 @@ public class Cliente {
         this.NombreEmpresa = NombreEmpresa;
     }
 
-    public double getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
-    public void setTelefono(double Telefono) {
+    public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
 

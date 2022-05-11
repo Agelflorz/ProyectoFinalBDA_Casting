@@ -7,6 +7,7 @@ package DAO;
 
 import java.util.List;
 import ObjectoNegocios.Cliente;
+
 /**
  *
  * @author blude
@@ -15,13 +16,13 @@ public interface IClientes {
 
     public void agregar(Cliente cliente);
 
-    public void eliminar(String nombre);
+    public void eliminar(int id);
 
-    public void BuscarNombre(String nombre);
+    public List<Cliente> BuscarID(int id);
 
-     List<Cliente> MostrarTodas();
+    List<Cliente> MostrarTodas();
 
     public void actualizar(Cliente ClientesActualizado);
-    
+
     public void crearConexion();
 }
