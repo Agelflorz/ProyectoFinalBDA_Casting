@@ -73,7 +73,7 @@ public class FrmMenu extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(102, 102, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pngegg (1).png"))); // NOI18N
-        jLabel3.setText("© Derechos Reservados 2020 por MalumaSoft");
+        jLabel3.setText("© Derechos Reservados 2022 por MalumaSoft");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -211,7 +211,7 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

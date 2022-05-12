@@ -6,10 +6,14 @@
 package DAO;
 
 import ObjectoNegocios.Usuario;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -24,27 +28,53 @@ public class DAO_Usuario implements IUsuario {
 
     @Override
     public void agregar(Usuario cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BasicDBObject documento = new BasicDBObject();
+        documento.put("Nombre", cliente.getNombreUsuario());
+        documento.put("Contraseña",cliente.getPassword());
+        collection.insert(documento);
     }
 
     @Override
-    public void eliminar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void eliminar(Usuario usuario) {
+        collection.remove(new BasicDBObject("Nombre", usuario.getNombreUsuario()));
     }
 
     @Override
-    public Usuario BuscarID(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Usuario> BuscarID(Usuario usuario) {
+        BasicDBObject documento = (BasicDBObject) collection.findOne(new BasicDBObject("Nombre", usuario));
+        if (documento!=null) {
+            List<Usuario> lista = new ArrayList<>();
+            lista.add(new Usuario(documento.getString("Nombre"), documento.getString("Password")));
+            return lista;
+        }else{
+            return null;
+        }
+        
     }
 
     @Override
     public List<Usuario> MostrarTodas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Usuario> lista = new ArrayList<>();
+        DBCursor cursor = collection.find();
+        while (cursor.hasNext()) {            
+            DBObject obj = cursor.next();
+            lista.add(new Usuario((String) obj.get("Nombre"), (String) obj.get("Password")));
+           
+        }
+        return lista;
     }
 
     @Override
     public void actualizar(Usuario UsuarioActualizado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("Nombre", UsuarioActualizado.getNombreUsuario()));
+        if (buscar!=null) {
+            BasicDBObject valorCambiar = new BasicDBObject("Nombre", UsuarioActualizado.getNombreUsuario());
+            BasicDBObject valorCambiar2 = new BasicDBObject("Contraseña", UsuarioActualizado.getPassword());
+            BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
+            BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);            
+            collection.update(buscar, actualizaOperacion);
+            collection.update(buscar, actualizaOperacion2);            
+        }
     }
 
     @Override

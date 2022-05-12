@@ -16,9 +16,9 @@ public interface IUsuario {
 
     public void agregar(Usuario cliente);
 
-    public void eliminar(int id);
+    public void eliminar(Usuario usuario);
 
-    public Usuario BuscarID(int id);
+    public List<Usuario> BuscarID(Usuario usuario);
 
     List<Usuario> MostrarTodas();
 

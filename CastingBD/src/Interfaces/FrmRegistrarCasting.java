@@ -79,10 +79,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
 
         tbl_Casting.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "CodigoCasting", "Nombre Casting", "Costo Casting", "Fase", "Descripcion", "Fecha Contratacion", "Empresa"
@@ -121,9 +118,9 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
 
         btn_Registrar.setText("Registrar");
 
-        jLabel3.setText("Cleintes disponibles");
+        jLabel3.setText("Clientes disponibles");
 
-        jLabel4.setText("Imformacion Casting");
+        jLabel4.setText("Informacion Casting");
 
         jLabel7.setText("Fecha Registro");
 

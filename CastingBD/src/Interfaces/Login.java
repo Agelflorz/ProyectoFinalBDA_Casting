@@ -9,7 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 /**
  *
- * @author blude
+ * @author blude y spide
  */
 public class Login extends javax.swing.JFrame {
 
@@ -34,6 +34,8 @@ public class Login extends javax.swing.JFrame {
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
+        
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
