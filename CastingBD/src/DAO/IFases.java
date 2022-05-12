@@ -17,7 +17,7 @@ public interface IFases {
 
     public void eliminar(int id);
 
-    public Fases BuscarID(int id);
+    public List<Fases> BuscarID(int id);
 
     List<Fases> MostrarTodas();
 
