@@ -86,20 +86,23 @@ public class DAO_Cliente implements IClientes {
 
     @Override
     public void actualizar(Cliente ClientesActualizado) {
-        Cliente c1 = new Cliente();
-        BasicDBObject actualizaCliente = new BasicDBObject();
+   DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("idCliente", ClientesActualizado.getIdCliente()));
+        if (buscar!=null) {
+            BasicDBObject valorCambiar = new BasicDBObject("NombreEmpresa", ClientesActualizado.getNombreEmpresa());
+            BasicDBObject valorCambiar2 = new BasicDBObject("Telefono", ClientesActualizado.getTelefono());
+            BasicDBObject valorCambiar3 = new BasicDBObject("Direccion", ClientesActualizado.getDireccion());
+            BasicDBObject valorCambiar4 = new BasicDBObject("NombreContacto", ClientesActualizado.getNombreContacto());
+            BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
+            BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);
+            BasicDBObject actualizaOperacion3 = new BasicDBObject("$set", valorCambiar3);
+            BasicDBObject actualizaOperacion4 = new BasicDBObject("$set", valorCambiar4);
 
-        actualizaCliente.append("$set", new BasicDBObject().append("NombreContacto", ClientesActualizado.getNombreContacto()));
-        actualizaCliente.append("$set", new BasicDBObject().append("NombreEmpresa", ClientesActualizado.getNombreEmpresa()));
-        actualizaCliente.append("$set", new BasicDBObject().append("Telefono", ClientesActualizado.getTelefono()));
-        actualizaCliente.append("$set", new BasicDBObject().append("Direccion", ClientesActualizado.getDireccion()));
-
-        BasicDBObject buscarCliente = new BasicDBObject();
-        buscarCliente.append("NombreContacto", c1.getNombreContacto());
-
-        collection.updateMulti(buscarCliente, actualizaCliente);
+            collection.update(buscar, actualizaOperacion);
+            collection.update(buscar, actualizaOperacion2);
+            collection.update(buscar, actualizaOperacion3);
+            collection.update(buscar, actualizaOperacion4);
     }
-
+}
     @Override
     public void crearConexion() {
         MongoClient mongo = null;

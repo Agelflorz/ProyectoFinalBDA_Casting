@@ -13,11 +13,11 @@ import java.util.List;
  * @author blude
  */
 public interface ICasting {
-        public void agregar(Casting cliente);
-
+    public void agregar(Casting CastinNew);
+    
     public void eliminar(int id);
 
-    public Casting BuscarID(int id);
+    public List<Casting> BuscarID(int id);
 
     List<Casting> MostrarTodas();
 

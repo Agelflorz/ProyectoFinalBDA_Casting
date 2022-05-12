@@ -15,16 +15,16 @@ public class Casting {
     int CodigoCasting;
     String NombreCasting;
     int costoCasting;
-    String Fases;
+    int Fases;
     String DescripcionCasting;
-    Date FechaConstratacion;
+    String FechaConstratacion;
     String NombreEmpresa;
     
 
     public Casting() {
     }
 
-    public Casting(int CodigoCasting, String NombreCasting, int costoCasting, String Fases, String DescripcionCasting, Date FechaConstratacion, String NombreEmpresa) {
+    public Casting(int CodigoCasting, String NombreCasting, int costoCasting, int Fases, String DescripcionCasting, String FechaConstratacion, String NombreEmpresa) {
         this.CodigoCasting = CodigoCasting;
         this.NombreCasting = NombreCasting;
         this.costoCasting = costoCasting;
@@ -58,11 +58,11 @@ public class Casting {
         this.costoCasting = costoCasting;
     }
 
-    public String getFases() {
+    public int getFases() {
         return Fases;
     }
 
-    public void setFases(String Fases) {
+    public void setFases(int Fases) {
         this.Fases = Fases;
     }
 
@@ -74,11 +74,11 @@ public class Casting {
         this.DescripcionCasting = DescripcionCasting;
     }
 
-    public Date getFechaConstratacion() {
+    public String getFechaConstratacion() {
         return FechaConstratacion;
     }
 
-    public void setFechaConstratacion(Date FechaConstratacion) {
+    public void setFechaConstratacion(String FechaConstratacion) {
         this.FechaConstratacion = FechaConstratacion;
     }
 
