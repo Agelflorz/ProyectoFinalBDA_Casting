@@ -14,12 +14,12 @@ import java.util.Date;
  */
 public class Fases {
     int idFases;
-    Date FechaFase;
+    String FechaFase;
 
     public Fases() {
     }
 
-    public Fases(int idFases, Date FechaFase) {
+    public Fases(int idFases, String FechaFase) {
         this.idFases = idFases;
         this.FechaFase = FechaFase;
     }
@@ -32,11 +32,11 @@ public class Fases {
         this.idFases = idFases;
     }
 
-    public Date getFechaFase() {
+    public String getFechaFase() {
         return FechaFase;
     }
 
-    public void setFechaFase(Date FechaFase) {
+    public void setFechaFase(String FechaFase) {
         this.FechaFase = FechaFase;
     }
 

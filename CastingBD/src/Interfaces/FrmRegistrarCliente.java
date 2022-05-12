@@ -47,7 +47,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
                 (screenSize.height - frameSize.height) / 2);
     }
 
-    //Aqui nos quedamos //Metodo para cargar la tabla
+   //Metodo para cargar la tabla
     public void cargarTabla() {
         this.ClienteControl.crearConexion();
         List<Cliente> list = this.ClienteControl.MostrarTodas();

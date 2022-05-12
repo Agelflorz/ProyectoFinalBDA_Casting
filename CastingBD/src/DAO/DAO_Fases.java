@@ -5,7 +5,6 @@
  */
 package DAO;
 
-import ObjectoNegocios.Cliente;
 import ObjectoNegocios.Fases;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -14,9 +13,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import com.toedter.calendar.JCalendar;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -30,10 +27,10 @@ public class DAO_Fases implements IFases {
     DBCollection collection;
 
     @Override
-    public void agregar(Fases cliente) {
+    public void agregar(Fases Fase) {
         BasicDBObject documento = new BasicDBObject();
-        documento.put("idFases", cliente.getIdFases());
-        documento.put("FechaFase", cliente.getFechaFase());
+        documento.put("idFases", Fase.getIdFases());
+        documento.put("FechaFase", Fase.getFechaFase());
         collection.insert(documento);
     }
 
@@ -50,7 +47,7 @@ public class DAO_Fases implements IFases {
             listaFase.add(
                     new Fases(
                             (int) documento.getInt("idFases"),
-                            documento.getDate("FechaFase"))
+                            documento.getString("FechaFase"))
             );
             return listaFase;
         }else{
@@ -61,18 +58,18 @@ public class DAO_Fases implements IFases {
 
     @Override
     public List<Fases> MostrarTodas() {
-        List<Fases> ListaCliente = new ArrayList<>();
+        List<Fases> ListaFase = new ArrayList<>();
         DBCursor cursor = collection.find();
         while (cursor.hasNext()) {
             DBObject obj = cursor.next();
-            ListaCliente.add(
+            ListaFase.add(
                     new Fases(
                             (int) obj.get("idFases"),
-                            (Date)obj.get("FechaFase"))
+                            (String)obj.get("FechaFase"))
             );
         }
 
-        return ListaCliente;
+        return ListaFase;
     }
 
     @Override
@@ -95,7 +92,7 @@ public class DAO_Fases implements IFases {
             mongo = new MongoClient("localhost", 27017);
             System.out.println("Connected to the database successfully");
             database = mongo.getDB("Casting_D");
-            collection = database.getCollection("Cliente");
+            collection = database.getCollection("Fase");
         } catch (MongoException ex) {
             JOptionPane.showMessageDialog(null, "Error en la conexion" + ex.toString());
 

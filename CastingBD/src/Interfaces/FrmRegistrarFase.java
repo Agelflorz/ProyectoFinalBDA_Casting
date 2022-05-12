@@ -5,18 +5,49 @@
  */
 package Interfaces;
 
+import ObjectoNegocios.Fases;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import DAO.DAO_Fases;
+
 /**
  *
  * @author blude
  */
 public class FrmRegistrarFase extends javax.swing.JFrame {
+DAO_Fases FaseControl = new DAO_Fases();
 
     /**
      * Creates new form FrmFases
      */
     public FrmRegistrarFase() {
         initComponents();
+        cargarTabla();
     }
+    //Metodo para cargar la tabla
+    
+    public void cargarTabla() {
+        this.FaseControl.crearConexion();
+        List<Fases> list = this.FaseControl.MostrarTodas();
+        System.out.println(list);
+        DefaultTableModel model = (DefaultTableModel) tbl_Fase.getModel();
+        model.setRowCount(0);
+        //int rowCount = model.getRowCount();
+        list.forEach(Fase -> {
+            model.addRow(new Object[]{
+                Fase.getIdFases(),
+                Fase.getFechaFase(),
+            });
+        });
+    }
+    //Metodo Guardar Fase
+    public void Guardar() {
+        int idFase = Integer.parseInt(this.txt_Fases.getText());
+        String FechaFase = this.txt_FaseFecha.getText();
+        Fases FaseNew = new Fases(idFase, FechaFase);
+        FaseControl.agregar(FaseNew);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,42 +59,65 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_Fase = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         txt_Fases = new javax.swing.JTextField();
         btn_Agregar = new javax.swing.JButton();
         btn_Eliminar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnEditar = new javax.swing.JButton();
+        txt_FaseFecha = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_Fase.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Fase", "FechaFase"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbl_Fase);
 
         jLabel1.setText("Fases");
 
         jLabel2.setText("Fecha");
 
         btn_Agregar.setText("Agregar");
+        btn_Agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_AgregarActionPerformed(evt);
+            }
+        });
 
         btn_Eliminar.setText("Eliminar");
 
         jLabel3.setText("Fases Registradas");
 
         btnEditar.setText("Editar");
+
+        jLabel4.setText("DD/MM/YYYY ");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -82,7 +136,7 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,11 +153,15 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                     .addComponent(btn_Eliminar))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addComponent(btnEditar)))
+                        .addComponent(btnEditar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_FaseFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(34, 34, 34)))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -113,13 +171,14 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1)
-                        .addComponent(txt_Fases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(txt_Fases, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_FaseFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Agregar)
@@ -130,6 +189,11 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AgregarActionPerformed
+   this.Guardar();
+   this.cargarTabla();
+    }//GEN-LAST:event_btn_AgregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,15 +235,16 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btn_Agregar;
     private javax.swing.JButton btn_Eliminar;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbl_Fase;
+    private javax.swing.JTextField txt_FaseFecha;
     private javax.swing.JTextField txt_Fases;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,8 +13,8 @@ import java.util.List;
  * @author blude
  */
 public interface IFases {
-        public void agregar(Fases cliente);
-
+    public void agregar(Fases Fase);
+    
     public void eliminar(int id);
 
     public List<Fases> BuscarID(int id);
