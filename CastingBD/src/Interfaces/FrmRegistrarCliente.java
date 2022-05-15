@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import DAO.Control;
 import DAO.DAO_Cliente;
+import DAO.DAO_Fases;
 import javax.swing.JOptionPane;
 import Interfaces.FrmMenu;
 
@@ -23,6 +24,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
 
     private Control control;
     DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
 
     /**
      * Creates new form FrmCliente
@@ -137,6 +139,8 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             cliente.setActividadCliente(txtActividad.getText());
             ClienteControl.actualizar(cliente);
             this.btnGuardarCliente.setVisible(true);
+             JOptionPane.showMessageDialog(this, "El cleinte se actualizo con exito.,",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
                     + "por favor, seleccione una opción valida.",
@@ -574,20 +578,22 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
         this.Eliminar();
-        cargarTabla();
+        limpiarTextbox();
+        cargarTabla();     
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
     private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked
-        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
+        
+        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();        
+        int idCliente = Integer.parseInt(model.getValueAt(tbl_Cliente.getSelectedRow(), 0).toString());
         String NomrbeEmpresa = model.getValueAt(tbl_Cliente.getSelectedRow(), 1).toString();
         String Telefono = model.getValueAt(tbl_Cliente.getSelectedRow(), 2).toString();
         String Direccion = model.getValueAt(tbl_Cliente.getSelectedRow(), 3).toString();
         String NombreContacto = model.getValueAt(tbl_Cliente.getSelectedRow(), 4).toString();
         String ActividadCliente = model.getValueAt(tbl_Cliente.getSelectedRow(), 5).toString();
-        int idCliente = Integer.parseInt(model.getValueAt(tbl_Cliente.getSelectedRow(), 0).toString());
         txtID.setText(idCliente + "");
         txtEmpresa.setText(NomrbeEmpresa);
         txtTelefono.setText(Telefono);
@@ -596,6 +602,8 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         txtActividad.setText(ActividadCliente);
         this.btnGuardarCliente.setVisible(false);
         this.txtID.setEditable(false);
+        
+        
     }//GEN-LAST:event_tbl_ClienteMouseClicked
 
     private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
@@ -619,7 +627,15 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
+        this.ClienteControl.crearConexion();
+        this.FaseControl.crearConexion();
+          if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+            JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
+        }  else if( ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+            FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
+            pantalla.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -627,7 +643,9 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
+        FrmMostrarCasting pantalla = new FrmMostrarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked

@@ -5,6 +5,8 @@
  */
 package Interfaces;
 
+import DAO.DAO_Casting;
+import DAO.DAO_Cliente;
 import ObjectoNegocios.Fases;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -14,13 +16,15 @@ import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import Interfaces.FrmMostrarCliente;
 import Interfaces.FrmRegistrarCliente;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author blude
  */
 public class FrmRegistrarFase extends javax.swing.JFrame {
-DAO_Fases FaseControl = new DAO_Fases();
-
+    DAO_Casting CastingControl = new DAO_Casting();
+    DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
     /**
      * Creates new form FrmFases
      */
@@ -61,10 +65,10 @@ DAO_Fases FaseControl = new DAO_Fases();
     //Metodo Guardar Fase
     public void Guardar() {
         int idFase = Integer.parseInt(this.txt_Fases.getText());
-        String FechaFase = this.txt_FaseFecha.getText();
-        Fases FaseNew = new Fases(idFase, FechaFase);
+        String Fecha = txt_FaseFecha.getText();
+        Fases FaseNew = new Fases(idFase, Fecha);
         FaseControl.agregar(FaseNew);
-    }
+      }
     
     //Metodo para elimnar Fase
     public void Eliminar() {
@@ -81,6 +85,31 @@ DAO_Fases FaseControl = new DAO_Fases();
                     "Error.", JOptionPane.ERROR_MESSAGE);
         }
         
+    }
+    //Metodo para editar Cliente
+    public void Editar() {
+        int indice = this.tbl_Fase.getSelectedRow();
+        if (indice != -1) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tbl_Fase.getModel();
+            int idCliente = (int) modeloTabla.getValueAt(indice, 0);
+            FaseControl.BuscarID(idCliente);
+            Fases fase = new Fases();
+            fase.setIdFases(Integer.parseInt(txt_Fases.getText()));
+            fase.setFechaFase(txt_FaseFecha.getText());
+            FaseControl.actualizar(fase);
+            this.btnAgreagar.setVisible(true);
+            JOptionPane.showMessageDialog(this, "La Fase se actualizo con exito.,",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
+                    + "por favor, seleccione una opción valida.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+       public void limpiarTextbox() {
+        txt_FaseFecha.setText("");
+        txt_Fases.setText("");
+        this.btnAgreagar.setVisible(true);
     }
 
 
@@ -105,6 +134,8 @@ DAO_Fases FaseControl = new DAO_Fases();
         txt_Fases = new javax.swing.JTextField();
         txt_FaseFecha = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        btn_Editar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
@@ -149,6 +180,11 @@ DAO_Fases FaseControl = new DAO_Fases();
                 return canEdit [columnIndex];
             }
         });
+        tbl_Fase.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_FaseMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_Fase);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -167,7 +203,7 @@ DAO_Fases FaseControl = new DAO_Fases();
         jLabel6.setText("Fases");
 
         btnAgreagar.setFont(new java.awt.Font("Lucida Grande", 0, 13)); // NOI18N
-        btnAgreagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
+        btnAgreagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Registrar.png"))); // NOI18N
         btnAgreagar.setText("Agregar");
         btnAgreagar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -193,30 +229,60 @@ DAO_Fases FaseControl = new DAO_Fases();
 
         jLabel4.setText("DD/MM/YYYY ");
 
+        btn_Editar.setFont(new java.awt.Font("Lucida Grande", 0, 13)); // NOI18N
+        btn_Editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
+        btn_Editar.setText("Editar");
+        btn_Editar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_EditarMouseClicked(evt);
+            }
+        });
+        btn_Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EditarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Limpiar.png"))); // NOI18N
+        jButton1.setText("Limpiar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(94, 94, 94)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_Fases, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_FaseFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
                         .addComponent(btnAgreagar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEminar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnEminar, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_Editar)
+                        .addGap(44, 44, 44))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txt_FaseFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(135, 135, 135))
+                .addGap(165, 165, 165))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,7 +297,9 @@ DAO_Fases FaseControl = new DAO_Fases();
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEminar)
-                    .addComponent(btnAgreagar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAgreagar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -254,7 +322,7 @@ DAO_Fases FaseControl = new DAO_Fases();
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGap(66, 66, 66))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +332,7 @@ DAO_Fases FaseControl = new DAO_Fases();
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         btnMenu.setForeground(new java.awt.Color(153, 153, 255));
@@ -387,6 +455,7 @@ DAO_Fases FaseControl = new DAO_Fases();
     private void btnEminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEminarActionPerformed
     this.Eliminar();
     this.cargarTabla();
+    this.limpiarTextbox();
     }//GEN-LAST:event_btnEminarActionPerformed
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
@@ -394,7 +463,15 @@ DAO_Fases FaseControl = new DAO_Fases();
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
+        this.ClienteControl.crearConexion();
+        this.FaseControl.crearConexion();
+          if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+            JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
+        }  else if( ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+            FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
+            pantalla.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -431,6 +508,30 @@ DAO_Fases FaseControl = new DAO_Fases();
         this.dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void tbl_FaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_FaseMouseClicked
+        DefaultTableModel model = (DefaultTableModel) tbl_Fase.getModel();
+        String idFase = model.getValueAt(tbl_Fase.getSelectedRow(), 0).toString();
+        String FechaFase = model.getValueAt(tbl_Fase.getSelectedRow(), 1).toString();
+        txt_Fases.setText(idFase);
+        txt_FaseFecha.setText(FechaFase);
+        this.btnAgreagar.setVisible(false);
+    }//GEN-LAST:event_tbl_FaseMouseClicked
+
+    private void btn_EditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_EditarMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_EditarMouseClicked
+
+    private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
+    Editar();
+    cargarTabla();
+    }//GEN-LAST:event_btn_EditarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.limpiarTextbox();
+        this.cargarTabla();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -439,6 +540,8 @@ DAO_Fases FaseControl = new DAO_Fases();
     private javax.swing.JMenu btnMenu;
     private javax.swing.JMenu btnUsuarios;
     private javax.swing.JMenu btnVenta;
+    private javax.swing.JButton btn_Editar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

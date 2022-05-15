@@ -24,6 +24,10 @@ public class Fases {
         this.FechaFase = FechaFase;
     }
 
+    public Fases(int idFases) {
+    this.idFases = idFases;
+    }
+
     public int getIdFases() {
         return idFases;
     }
@@ -42,7 +46,7 @@ public class Fases {
 
     @Override
     public String toString() {
-        return "Fases{" + "idFases=" + idFases + ", FechaFase=" + FechaFase + '}';
+        return  ""+idFases ;
     }
 
 }

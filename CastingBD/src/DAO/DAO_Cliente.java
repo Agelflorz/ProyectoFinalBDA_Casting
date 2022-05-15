@@ -77,7 +77,7 @@ public class DAO_Cliente implements IClientes {
                             (String) obj.get("Telefono"),
                             (String) obj.get("Direccion"),
                             (String) obj.get("NombreContacto"),
-                            (String) obj.get("ActividadCliente"))
+                            (String) obj.get("Actividad"))
             );
         }
 
@@ -92,6 +92,7 @@ public class DAO_Cliente implements IClientes {
             BasicDBObject valorCambiar2 = new BasicDBObject("Telefono", ClientesActualizado.getTelefono());
             BasicDBObject valorCambiar3 = new BasicDBObject("Direccion", ClientesActualizado.getDireccion());
             BasicDBObject valorCambiar4 = new BasicDBObject("NombreContacto", ClientesActualizado.getNombreContacto());
+            
             BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
             BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);
             BasicDBObject actualizaOperacion3 = new BasicDBObject("$set", valorCambiar3);
@@ -117,5 +118,22 @@ public class DAO_Cliente implements IClientes {
 
         }
     }
+    public List<Cliente> BuscarIDCliente() {
+        try {
+            crearConexion();
+            BasicDBObject documento = (BasicDBObject) collection.findOne();
+            if (documento != null) {
+                List<Cliente> listaFase = new ArrayList<>();
+                listaFase.add(
+                        new Cliente(
+                                (int) documento.getInt("idCliente")));
+                return listaFase;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 
 }

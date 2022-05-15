@@ -29,6 +29,11 @@ public class Cliente {
         this.ActividadCliente = ActividadCliente;
     }
 
+    public Cliente(int idCliente) {
+    this.idCliente = idCliente;
+
+    }
+
     public int getIdCliente() {
         return idCliente;
     }

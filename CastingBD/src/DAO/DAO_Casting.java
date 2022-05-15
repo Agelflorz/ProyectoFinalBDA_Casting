@@ -54,7 +54,7 @@ public class DAO_Casting implements ICasting{
                             (String) obj.get("NombreCasting"),
                             (int) obj.get("CostoCasting"),
                             (int) obj.get("Fase"),
-                            (String) obj.get("DescipcionCasting"),
+                            (String) obj.get("DescripcionCasting"),
                             (String) obj.get("FechaContratacion"),
                             (String) obj.get("NombreEmpresa"))
 

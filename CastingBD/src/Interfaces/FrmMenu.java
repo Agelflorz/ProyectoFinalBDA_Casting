@@ -5,16 +5,26 @@
  */
 package Interfaces;
 
+import DAO.DAO_Casting;
+import DAO.DAO_Cliente;
+import DAO.DAO_Fases;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import Interfaces.FrmMostrarCliente;
+import Interfaces.FrmMostrarCasting;
 import Interfaces.FrmRegistrarCliente;
 import Interfaces.FrmRegistrarFase;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author blude
  */
 public class FrmMenu extends javax.swing.JFrame {
+
+    DAO_Casting CastingControl = new DAO_Casting();
+    DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
 
     /**
      * Creates new form FrmMenu
@@ -23,22 +33,22 @@ public class FrmMenu extends javax.swing.JFrame {
         initComponents();
         centrarVentana();
     }
+
     private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,15 +221,26 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
+        this.ClienteControl.crearConexion();
+        this.FaseControl.crearConexion();
+          if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+            JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
+        }  else {
+            FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
+            pantalla.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-      
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        
+        FrmMostrarCasting pantalla = new FrmMostrarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
@@ -227,15 +248,15 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVentaMouseClicked
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    FrmRegistrarCliente Pantalla = new FrmRegistrarCliente();
-    Pantalla.setVisible(true);
-    this.dispose();
+        FrmRegistrarCliente Pantalla = new FrmRegistrarCliente();
+        Pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-    FrmMostrarCliente pantalla = new FrmMostrarCliente();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmMostrarCliente pantalla = new FrmMostrarCliente();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void btnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseClicked
@@ -243,9 +264,9 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUsuariosMouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-    FrmRegistrarFase pantalla = new FrmRegistrarFase();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmRegistrarFase pantalla = new FrmRegistrarFase();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -264,4 +285,5 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
+
 }

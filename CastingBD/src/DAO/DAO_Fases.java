@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author blude y spide
  */
 public class DAO_Fases implements IFases {
-    
+
     DB database;
     DBCollection collection;
 
@@ -50,10 +50,27 @@ public class DAO_Fases implements IFases {
                             documento.getString("FechaFase"))
             );
             return listaFase;
-        }else{
+        } else {
             return null;
         }
-        
+
+    }
+
+    public List<Fases> BuscarIDFase() {
+        try {
+            crearConexion();
+            BasicDBObject documento = (BasicDBObject) collection.findOne();
+            if (documento != null) {
+                List<Fases> listaFase = new ArrayList<>();
+                listaFase.add(
+                        new Fases(
+                                (int) documento.getInt("idFases")));
+                return listaFase;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     @Override
@@ -65,7 +82,7 @@ public class DAO_Fases implements IFases {
             ListaFase.add(
                     new Fases(
                             (int) obj.get("idFases"),
-                            (String)obj.get("FechaFase"))
+                            (String) obj.get("FechaFase"))
             );
         }
 
@@ -74,14 +91,17 @@ public class DAO_Fases implements IFases {
 
     @Override
     public void actualizar(Fases FasesActualizado) {
-        Fases f1 = new Fases();
-        BasicDBObject actualizaFecha = new BasicDBObject();
-        
-        actualizaFecha.append("$set", new BasicDBObject().append("idFases", FasesActualizado.getIdFases()));
-        actualizaFecha.append("$set", new BasicDBObject().append("idFases", FasesActualizado.getFechaFase()));
-        BasicDBObject buscarFases = new BasicDBObject();
-        buscarFases.append("idFases", f1.getIdFases());
-        collection.updateMulti(buscarFases, actualizaFecha);
+        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("idFases", FasesActualizado.getIdFases()));
+        if (buscar != null) {
+            BasicDBObject valorCambiar = new BasicDBObject("idFases", FasesActualizado.getIdFases());
+            BasicDBObject valorCambiar2 = new BasicDBObject("FechaFase", FasesActualizado.getFechaFase());
+            BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
+            BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);
+
+            collection.update(buscar, actualizaOperacion);
+            collection.update(buscar, actualizaOperacion2);
+
+        }
     }
 
     @Override
@@ -98,5 +118,5 @@ public class DAO_Fases implements IFases {
 
         }
     }
-    
+
 }
