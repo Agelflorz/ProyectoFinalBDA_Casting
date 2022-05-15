@@ -6,18 +6,24 @@
 package Interfaces;
 
 import DAO.DAO_Casting;
+import DAO.DAO_Cliente;
+import DAO.DAO_Fases;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ObjectoNegocios.Casting;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author blude
  */
 public class FrmMostrarCasting extends javax.swing.JFrame {
-     DAO_Casting CastingControl = new DAO_Casting();
+
+    DAO_Casting CastingControl = new DAO_Casting();
+    DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
 
     /**
      * Creates new form FrmMostrarCasting
@@ -27,6 +33,7 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         cargarTabla();
         centrarVentana();
     }
+
     public void cargarTabla() {
         this.CastingControl.crearConexion();
         List<Casting> list = this.CastingControl.MostrarTodas();
@@ -47,21 +54,22 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
             });
         });
     }
-     private void centrarVentana() {
+
+    private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,7 +177,7 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnMenu.setForeground(new java.awt.Color(153, 153, 255));
@@ -268,25 +276,31 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
-     
+
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        FrmRegistrarCasting menu = new FrmRegistrarCasting();
-        menu.setVisible(true);
-        this.dispose();
+        this.ClienteControl.crearConexion();
+        this.FaseControl.crearConexion();
+        if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+            JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
+        } else if (ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+            FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
+            pantalla.setVisible(true);
+            this.dispose();
+        }
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-  
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
@@ -298,7 +312,9 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-
+        FrmMostrarCliente pantalla = new FrmMostrarCliente();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void btnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseClicked

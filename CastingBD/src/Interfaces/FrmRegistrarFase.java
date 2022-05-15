@@ -17,14 +17,17 @@ import javax.swing.JOptionPane;
 import Interfaces.FrmMostrarCliente;
 import Interfaces.FrmRegistrarCliente;
 import java.text.SimpleDateFormat;
+
 /**
  *
  * @author blude
  */
 public class FrmRegistrarFase extends javax.swing.JFrame {
+
     DAO_Casting CastingControl = new DAO_Casting();
     DAO_Cliente ClienteControl = new DAO_Cliente();
     DAO_Fases FaseControl = new DAO_Fases();
+
     /**
      * Creates new form FrmFases
      */
@@ -33,21 +36,23 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
         cargarTabla();
         centrarVentana();
     }
+
     //Metodo para cargar la tabla
-     private void centrarVentana() {
+    private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
+
     public void cargarTabla() {
         this.FaseControl.crearConexion();
         List<Fases> list = this.FaseControl.MostrarTodas();
@@ -58,18 +63,18 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
         list.forEach(Fase -> {
             model.addRow(new Object[]{
                 Fase.getIdFases(),
-                Fase.getFechaFase(),
-            });
+                Fase.getFechaFase(),});
         });
     }
+
     //Metodo Guardar Fase
     public void Guardar() {
         int idFase = Integer.parseInt(this.txt_Fases.getText());
         String Fecha = txt_FaseFecha.getText();
         Fases FaseNew = new Fases(idFase, Fecha);
         FaseControl.agregar(FaseNew);
-      }
-    
+    }
+
     //Metodo para elimnar Fase
     public void Eliminar() {
         int indice = this.tbl_Fase.getSelectedRow();
@@ -84,8 +89,9 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                     + "por favor, seleccione una opción valida.",
                     "Error.", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }
+
     //Metodo para editar Cliente
     public void Editar() {
         int indice = this.tbl_Fase.getSelectedRow();
@@ -106,12 +112,12 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                     "Error.", JOptionPane.ERROR_MESSAGE);
         }
     }
-       public void limpiarTextbox() {
+
+    public void limpiarTextbox() {
         txt_FaseFecha.setText("");
         txt_Fases.setText("");
         this.btnAgreagar.setVisible(true);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -448,14 +454,14 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgreagarMouseClicked
 
     private void btnAgreagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgreagarActionPerformed
-   this.Guardar();
-   this.cargarTabla();
+        this.Guardar();
+        this.cargarTabla();
     }//GEN-LAST:event_btnAgreagarActionPerformed
 
     private void btnEminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEminarActionPerformed
-    this.Eliminar();
-    this.cargarTabla();
-    this.limpiarTextbox();
+        this.Eliminar();
+        this.cargarTabla();
+        this.limpiarTextbox();
     }//GEN-LAST:event_btnEminarActionPerformed
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
@@ -465,9 +471,9 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.ClienteControl.crearConexion();
         this.FaseControl.crearConexion();
-          if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+        if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
             JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
-        }  else if( ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+        } else if (ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
             FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
             pantalla.setVisible(true);
             this.dispose();
@@ -479,7 +485,9 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
+        FrmMostrarCasting pantalla = new FrmMostrarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
@@ -487,15 +495,15 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVentaMouseClicked
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    FrmRegistrarCliente pantalla = new FrmRegistrarCliente();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmRegistrarCliente pantalla = new FrmRegistrarCliente();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-    FrmMostrarCliente pantalla = new FrmMostrarCliente();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmMostrarCliente pantalla = new FrmMostrarCliente();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void btnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseClicked
@@ -522,8 +530,8 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_EditarMouseClicked
 
     private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
-    Editar();
-    cargarTabla();
+        Editar();
+        cargarTabla();
     }//GEN-LAST:event_btn_EditarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -531,7 +539,6 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
         this.cargarTabla();
 
     }//GEN-LAST:event_jButton1ActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -22,7 +22,6 @@ import Interfaces.FrmMenu;
  */
 public class FrmRegistrarCliente extends javax.swing.JFrame {
 
-    private Control control;
     DAO_Cliente ClienteControl = new DAO_Cliente();
     DAO_Fases FaseControl = new DAO_Fases();
 
@@ -38,19 +37,19 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
 
-   //Metodo para cargar la tabla
+    //Metodo para cargar la tabla
     public void cargarTabla() {
         this.ClienteControl.crearConexion();
         List<Cliente> list = this.ClienteControl.MostrarTodas();
@@ -80,7 +79,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         String ActividadCliente = this.txtActividad.getText();
         Cliente ClienteNew = new Cliente(idCliente, NombreEmpresa, telefono, Direccion, NombreContacto, ActividadCliente);
         ClienteControl.agregar(ClienteNew);
-        
+
     }
 
     //Metodo para elimnar Cliente
@@ -97,7 +96,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
                     + "por favor, seleccione una opción valida.",
                     "Error.", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }
 
     //Metodo Buscar cliente(ID)
@@ -121,8 +120,9 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             });
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "No se ha encontrado el ID del cliente.", "Confimación", JOptionPane.INFORMATION_MESSAGE);
-        }        
+        }
     }
+
     //Metodo para editar Cliente
     public void Editar() {
         int indice = this.tbl_Cliente.getSelectedRow();
@@ -139,7 +139,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             cliente.setActividadCliente(txtActividad.getText());
             ClienteControl.actualizar(cliente);
             this.btnGuardarCliente.setVisible(true);
-             JOptionPane.showMessageDialog(this, "El cleinte se actualizo con exito.,",
+            JOptionPane.showMessageDialog(this, "El cleinte se actualizo con exito.,",
                     "Notificación.", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
@@ -327,6 +327,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             }
         });
 
+        btn_Editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
         btn_Editar.setText("Editar");
         btn_Editar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -334,6 +335,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             }
         });
 
+        btn_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Delete.png"))); // NOI18N
         btn_Eliminar.setText("Eliminar");
         btn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -579,15 +581,15 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
         this.Eliminar();
         limpiarTextbox();
-        cargarTabla();     
+        cargarTabla();
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
     private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked
-        
-        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();        
+
+        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
         int idCliente = Integer.parseInt(model.getValueAt(tbl_Cliente.getSelectedRow(), 0).toString());
         String NomrbeEmpresa = model.getValueAt(tbl_Cliente.getSelectedRow(), 1).toString();
         String Telefono = model.getValueAt(tbl_Cliente.getSelectedRow(), 2).toString();
@@ -602,24 +604,24 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         txtActividad.setText(ActividadCliente);
         this.btnGuardarCliente.setVisible(false);
         this.txtID.setEditable(false);
-        
-        
+
+
     }//GEN-LAST:event_tbl_ClienteMouseClicked
 
     private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
         Guardar();
         cargarTabla();
-        
+
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.limpiarTextbox();
-        this.cargarTabla(); 
-        
+        this.cargarTabla();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
-  
+
     }//GEN-LAST:event_txtIDActionPerformed
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
@@ -629,9 +631,9 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.ClienteControl.crearConexion();
         this.FaseControl.crearConexion();
-          if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+        if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
             JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
-        }  else if( ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+        } else if (ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
             FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
             pantalla.setVisible(true);
             this.dispose();
@@ -663,8 +665,8 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUsuariosMouseClicked
 
     private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
-    Editar();
-    cargarTabla();
+        Editar();
+        cargarTabla();
     }//GEN-LAST:event_btn_EditarActionPerformed
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
@@ -672,9 +674,9 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    FrmMenu pantalla = new FrmMenu();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmMenu pantalla = new FrmMenu();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -682,7 +684,6 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         pantalla.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

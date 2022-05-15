@@ -6,6 +6,7 @@
 package Interfaces;
 
 import DAO.DAO_Cliente;
+import DAO.DAO_Fases;
 import ObjectoNegocios.Cliente;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -13,12 +14,15 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Interfaces.FrmRegistrarCliente;
+
 /**
  *
  * @author blude
  */
 public class FrmMostrarCliente extends javax.swing.JFrame {
+
     DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
 
     /**
      * Creates new form FrmMostrarCliente
@@ -28,21 +32,23 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
         centrarVentana();
         cargarTabla();
     }
-        private void centrarVentana() {
+
+    private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
-        public void cargarTabla() {
+
+    public void cargarTabla() {
         this.ClienteControl.crearConexion();
         List<Cliente> list = this.ClienteControl.MostrarTodas();
         System.out.println(list);
@@ -60,8 +66,6 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
             });
         });
     }
-        
-        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -289,10 +293,19 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
-   
+
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.ClienteControl.crearConexion();
+        this.FaseControl.crearConexion();
+        if (ClienteControl.BuscarIDCliente() == null || FaseControl.BuscarIDFase() == null) {
+            JOptionPane.showMessageDialog(this, "Aun no sea registrado un cliente o una fase ", "Error.", JOptionPane.ERROR_MESSAGE);
+        } else if (ClienteControl.BuscarIDCliente() != null || FaseControl.BuscarIDFase() != null) {
+            FrmRegistrarCasting pantalla = new FrmRegistrarCasting();
+            pantalla.setVisible(true);
+            this.dispose();
+        }
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -305,17 +318,19 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUsuariosMouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-   
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
+        FrmMostrarCasting pantalla = new FrmMostrarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    FrmRegistrarCliente pantalla = new FrmRegistrarCliente();
-    pantalla.setVisible(true);
-    this.dispose();
+        FrmRegistrarCliente pantalla = new FrmRegistrarCliente();
+        pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked

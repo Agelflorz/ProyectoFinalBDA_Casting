@@ -29,7 +29,15 @@ public class DAO_Casting implements ICasting{
     
     @Override
     public void agregar(Casting CastinNew) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BasicDBObject documento = new BasicDBObject();
+        documento.put("CodigoCasting", CastinNew.getCodigoCasting());
+        documento.put("NombreCasting", CastinNew.getNombreCasting());
+        documento.put("CostoCasting", CastinNew.getCostoCasting());
+        documento.put("Fase", CastinNew.getFases());
+        documento.put("DescripcionCasting", CastinNew.getDescripcionCasting());
+        documento.put("FechaContratacion", CastinNew.getFechaConstratacion());
+        documento.put("NombreEmpresa", CastinNew.getNombreEmpresa());
+        collection.insert(documento);
     }
 
     @Override
