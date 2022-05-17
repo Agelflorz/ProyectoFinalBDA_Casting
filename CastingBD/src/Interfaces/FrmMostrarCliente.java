@@ -87,6 +87,7 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
         btnVenta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        ItemEditarCasting = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -228,6 +229,15 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
         });
         btnVenta.add(jMenuItem2);
 
+        ItemEditarCasting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        ItemEditarCasting.setText("Editar Casting");
+        ItemEditarCasting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemEditarCastingActionPerformed(evt);
+            }
+        });
+        btnVenta.add(ItemEditarCasting);
+
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/material (1).png"))); // NOI18N
         jMenuItem3.setText("Mostrar Casting");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -349,6 +359,12 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void ItemEditarCastingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemEditarCastingActionPerformed
+        EditarCasting  pantalla = new EditarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ItemEditarCastingActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -385,6 +401,7 @@ public class FrmMostrarCliente extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ItemEditarCasting;
     private javax.swing.JMenu btnMenu;
     private javax.swing.JMenu btnUsuarios;
     private javax.swing.JMenu btnVenta;

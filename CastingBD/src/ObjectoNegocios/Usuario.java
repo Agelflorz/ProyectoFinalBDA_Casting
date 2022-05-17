@@ -10,18 +10,34 @@ package ObjectoNegocios;
  * @author blude y spide
  */
 public class Usuario {
+
+    int ID;
     String nombreUsuario;
     String password;
-    
-    public Usuario(){
-        
+
+    public Usuario() {
+
+    }
+
+    public Usuario(int ID, String nombreUsuario, String password) {
+        this.ID = ID;
+        this.nombreUsuario = nombreUsuario;
+        this.password = password;
+
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Usuario(String nombreUsuario, String password) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
-
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -42,6 +58,5 @@ public class Usuario {
     public String toString() {
         return "Usuario{" + "nombreUsuario=" + nombreUsuario + ", password=" + password + '}';
     }
-    
-    
+
 }

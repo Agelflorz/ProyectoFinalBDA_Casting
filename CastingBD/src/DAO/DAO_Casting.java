@@ -29,6 +29,7 @@ public class DAO_Casting implements ICasting{
     
     @Override
     public void agregar(Casting CastinNew) {
+        crearConexion();
         BasicDBObject documento = new BasicDBObject();
         documento.put("CodigoCasting", CastinNew.getCodigoCasting());
         documento.put("NombreCasting", CastinNew.getNombreCasting());
@@ -42,12 +43,22 @@ public class DAO_Casting implements ICasting{
 
     @Override
     public void eliminar(int id) {
-    collection.remove(new BasicDBObject("idCliente", id));
+    collection.remove(new BasicDBObject("CodigoCasting", id));
     }
 
-    @Override
+    
     public List<Casting> BuscarID(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     crearConexion();
+        BasicDBObject documento = (BasicDBObject) collection.findOne(new BasicDBObject("idCasting", id));
+        if (documento != null) {
+            List<Casting> ListaCasting = new ArrayList<>();
+            ListaCasting.add(
+                    new Casting(
+                            (int) documento.get("Fase")));
+            return ListaCasting;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -58,7 +69,7 @@ public class DAO_Casting implements ICasting{
             DBObject obj = cursor.next();
             ListaCasting.add(
                     new Casting(
-                            (int) obj.get("CodigoCasting"),
+                            (int) obj.get("CodigoCasting"),                            
                             (String) obj.get("NombreCasting"),
                             (int) obj.get("CostoCasting"),
                             (int) obj.get("Fase"),
@@ -75,8 +86,49 @@ public class DAO_Casting implements ICasting{
 
     @Override
     public void actualizar(Casting CastingActualizado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        crearConexion();
+        BasicDBObject documento = new BasicDBObject("CodigoCasting", CastingActualizado.getCodigoCasting());
+        BasicDBObject documentoNuevo = new BasicDBObject();
+
+        if (documento !=null) {
+        documentoNuevo.put("CodigoCasting", CastingActualizado.getCodigoCasting());
+        documentoNuevo.put("NombreCasting", CastingActualizado.getNombreCasting());
+        documentoNuevo.put("CostoCasting", CastingActualizado.getCostoCasting());
+        documentoNuevo.put("Fase", CastingActualizado.getFases());
+        documentoNuevo.put("DescripcionCasting", CastingActualizado.getDescripcionCasting());
+        documentoNuevo.put("FechaContratacion", CastingActualizado.getFechaConstratacion());
+        documentoNuevo.put("NombreEmpresa", CastingActualizado.getNombreEmpresa());
+        }
+        
+//        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("CodigoCasting", CastingActualizado.getCodigoCasting()));
+        
+//        if (buscar != null) {
+//            BasicDBObject valorCambiar = new BasicDBObject("NombreCasting", CastingActualizado.getNombreCasting());
+//            BasicDBObject valorCambiar2 = new BasicDBObject("CostoCasting", CastingActualizado.getCostoCasting());
+//            BasicDBObject valorCambiar3 = new BasicDBObject("Fase", CastingActualizado.getFases());
+//            BasicDBObject valorCambiar4 = new BasicDBObject("DescripcionCasting", CastingActualizado.getDescripcionCasting());
+//            BasicDBObject valorCambiar5 = new BasicDBObject("FechaContratacion", CastingActualizado.getFechaConstratacion());
+//            BasicDBObject valorCambiar6 = new BasicDBObject("NombreEmpresa", CastingActualizado.getNombreEmpresa());
+//            
+//            BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
+//            BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);
+//            BasicDBObject actualizaOperacion3 = new BasicDBObject("$set", valorCambiar3);
+//            BasicDBObject actualizaOperacion4 = new BasicDBObject("$set", valorCambiar4);
+//            BasicDBObject actualizaOperacion5 = new BasicDBObject("$set", valorCambiar5);
+//            BasicDBObject actualizaOperacion6 = new BasicDBObject("$set", valorCambiar6);
+            
+            collection.findAndModify(documento, documentoNuevo);
+  
+//            collection.update(buscar, actualizaOperacion);
+//            collection.update(buscar, actualizaOperacion2);
+//            collection.update(buscar, actualizaOperacion3);
+//            collection.update(buscar, actualizaOperacion4);
+//            collection.update(buscar, actualizaOperacion5);
+//            collection.update(buscar, actualizaOperacion6);
+            
+        }
+    
+
 
     @Override
     public void crearConexion() {

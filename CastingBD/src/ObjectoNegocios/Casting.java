@@ -34,6 +34,19 @@ public class Casting {
         this.NombreEmpresa = NombreEmpresa;
     }
 
+    public Casting(int CodigoCasting) {
+    this.CodigoCasting = CodigoCasting;
+    }
+
+    public Casting(String NombreCasting, int costoCasting, int Fases, String DescripcionCasting, String FechaConstratacion, String NombreEmpresa) {
+        this.NombreCasting = NombreCasting;
+        this.costoCasting = costoCasting;
+        this.Fases = Fases;
+        this.DescripcionCasting = DescripcionCasting;
+        this.FechaConstratacion = FechaConstratacion;
+        this.NombreEmpresa = NombreEmpresa;
+    }
+
     public int getCodigoCasting() {
         return CodigoCasting;
     }

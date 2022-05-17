@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface IUsuario {
 
-    public void agregar(Usuario cliente);
+    public void agregar(Usuario Usuario);
 
     public void eliminar(Usuario usuario);
 

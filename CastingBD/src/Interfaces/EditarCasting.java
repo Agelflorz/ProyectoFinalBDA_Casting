@@ -5,60 +5,35 @@
  */
 package Interfaces;
 
-import ObjectoNegocios.Casting;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
 import DAO.DAO_Casting;
 import DAO.DAO_Cliente;
 import DAO.DAO_Fases;
-import ObjectoNegocios.Cliente;
+import ObjectoNegocios.Casting;
 import ObjectoNegocios.Fases;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import DAO.DAO_Fases;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author blude
  */
-public class FrmRegistrarCasting extends javax.swing.JFrame {
+public class EditarCasting extends javax.swing.JFrame {
 
     DAO_Casting CastingControl = new DAO_Casting();
     DAO_Cliente ClienteControl = new DAO_Cliente();
     DAO_Fases FaseControl = new DAO_Fases();
 
     /**
-     * Creates new form FrmRegistrarCasting
+     * Creates new form EditarCasting
      */
-    public FrmRegistrarCasting() {
+    public EditarCasting() {
         initComponents();
         centrarVentana();
-        obtenerFaseID();
         cargarTabla();
-        txtFecha.setText(FechaAtual());
-    }
-    //Metodo para cargar la tabla
-
-    public void cargarTabla() {
-        this.ClienteControl.crearConexion();
-        List<Cliente> list = this.ClienteControl.MostrarTodas();
-        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
-        model.setRowCount(0);
-        //int rowCount = model.getRowCount();
-        list.forEach(cliente -> {
-            model.addRow(new Object[]{
-                cliente.getIdCliente(),
-                cliente.getNombreEmpresa(),
-                cliente.getTelefono(),
-                cliente.getDireccion(),
-                cliente.getNombreContacto(),
-                cliente.getActividadCliente()
-
-            });
-        });
+        obtenerFaseID();
     }
 
     private void centrarVentana() {
@@ -76,31 +51,54 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 (screenSize.height - frameSize.height) / 2);
     }
 
-    public void Guardar() {
-        try {
-            this.ClienteControl.crearConexion();
-            int idCasting = Integer.parseInt(this.txtID.getText());
-            String NombreContacto = this.txtNombre.getText();
-            String Empresa = txtEmpresa.getText();
-            int Costo = Integer.parseInt(this.txtCosto.getText());
-            String FechaContratacion = txtFecha.getText();
-            String Descripcion = this.txtDescripcion.getText();
+    public void cargarTabla() {
+        this.CastingControl.crearConexion();
+        List<Casting> list = this.CastingControl.MostrarTodas();
+        System.out.println(list);
+        DefaultTableModel model = (DefaultTableModel) tbl_Casting.getModel();
+        model.setRowCount(0);
+        //int rowCount = model.getRowCount();
+        list.forEach(Casting -> {
+            model.addRow(new Object[]{
+                Casting.getCodigoCasting(),
+                Casting.getNombreCasting(),
+                Casting.getCostoCasting(),
+                Casting.getFases(),
+                Casting.getDescripcionCasting(),
+                Casting.getFechaConstratacion(),
+                Casting.getNombreEmpresa()
+
+            });
+        });
+    }
+       public void Editar() {
+        int indice = this.tbl_Casting.getSelectedRow();
+        if (indice != -1) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tbl_Casting.getModel();
+            int idCasting = (int) modeloTabla.getValueAt(indice, 0);
+            Casting CastingEdit = new Casting();
+            CastingEdit.setCodigoCasting(Integer.parseInt(txtID.getText()));
+            CastingEdit.setNombreCasting(txtNombre.getText());
+            CastingEdit.setCostoCasting(Integer.parseInt(txtCosto.getText()) );            
             Fases Fase2 = (Fases) Cmb_Fase.getSelectedItem();
             int FaseID = Fase2.getIdFases();
-            Casting CastingNew = new Casting(idCasting, NombreContacto, Costo, FaseID, Descripcion, FechaContratacion, Empresa);
-            CastingControl.agregar(CastingNew);
-        } catch (Exception e) {
-            System.out.println(e);
+            CastingEdit.setFases(FaseID);
+            CastingEdit.setDescripcionCasting(txtDescripcion.getText());
+            CastingEdit.setFechaConstratacion(txtFecha.getText());
+            CastingEdit.setNombreEmpresa(txtEmpresa.getText());
+            
+            System.out.println(CastingEdit);
+            
+            CastingControl.actualizar(CastingEdit);
+            JOptionPane.showMessageDialog(this, "El Casting se actualizo con exito.,",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
+                    + "por favor, seleccione una opción valida.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
         }
+    }
 
-    }
-      public void limpiarTextbox() {
-        txtID.setText("");
-        txtEmpresa.setText("");
-        txtCosto.setText("");
-        txtNombre.setText("");
-        txtDescripcion.setText("");
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -120,7 +118,6 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        btnRegistrar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
         Cmb_Fase = new javax.swing.JComboBox<>();
@@ -131,15 +128,17 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         txtID = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_Cliente = new javax.swing.JTable();
+        btn_Editar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_Casting = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
         btnVenta = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        ItemEditarCasting = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -147,7 +146,6 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         btnUsuarios = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 5));
@@ -157,7 +155,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 3, 48)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(153, 153, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Registro de Casting");
+        jLabel4.setText("Editar Casting");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Información Casting", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
 
@@ -168,15 +166,6 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jLabel5.setText("Descripción:");
 
         jLabel6.setText("Fases:");
-
-        btnRegistrar.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Registrar.png"))); // NOI18N
-        btnRegistrar.setText("Registrar Casting");
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
-            }
-        });
 
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,8 +192,8 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
 
         jLabel9.setText("Fecha:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Limpiar.png"))); // NOI18N
-        jButton1.setText("Limpiar");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Delete.png"))); // NOI18N
+        jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -218,6 +207,14 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         });
 
         jLabel10.setText("ID:");
+
+        btn_Editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
+        btn_Editar.setText("Editar");
+        btn_Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -236,23 +233,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel7))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(btnRegistrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(170, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEminar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtDescripcion))
+                        .addComponent(txtDescripcion)
                         .addGap(33, 33, 33))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,7 +241,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +254,22 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(10, 10, 10))))
+                        .addGap(10, 10, 10))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel7))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEminar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(91, 91, 91)
+                                .addComponent(btn_Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,13 +280,13 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(25, 25, 25))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 11, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
@@ -311,30 +307,37 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEminar))
-                .addGap(16, 16, 16)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
                 .addComponent(jLabel7)
                 .addGap(17, 17, 17))
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Clientes y Agentes Disponibles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(102, 102, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pngegg (1).png"))); // NOI18N
+        jLabel3.setText("© Derechos Reservados 2020 por MalumaSoft");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        tbl_Cliente.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Casting Registrados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
+
+        tbl_Casting.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Empresa", "Telefono", "Direccion", "NombreContacto", "Actividad"
+                "CodigoCasting", "Nombre Casting", "Costo Casting", "Fase", "Descripcion", "Fecha Contratacion", "Empresa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -345,61 +348,52 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbl_Cliente.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_Casting.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_ClienteMouseClicked(evt);
+                tbl_CastingMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tbl_Cliente);
+        jScrollPane2.setViewportView(tbl_Casting);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-        );
+        jScrollPane1.setViewportView(jScrollPane2);
 
-        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(102, 102, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pngegg (1).png"))); // NOI18N
-        jLabel3.setText("© Derechos Reservados 2020 por MalumaSoft");
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(99, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnMenu.setForeground(new java.awt.Color(153, 153, 255));
@@ -422,6 +416,15 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             }
         });
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
+        jMenuItem1.setText("Registrar ");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        btnVenta.add(jMenuItem1);
+
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (6).png"))); // NOI18N
         jMenuItem2.setText("Perfil");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -430,15 +433,6 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             }
         });
         btnVenta.add(jMenuItem2);
-
-        ItemEditarCasting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
-        ItemEditarCasting.setText("Editar Casting");
-        ItemEditarCasting.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ItemEditarCastingActionPerformed(evt);
-            }
-        });
-        btnVenta.add(ItemEditarCasting);
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/material (1).png"))); // NOI18N
         jMenuItem3.setText("Mostrar Casting");
@@ -490,15 +484,39 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 901, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaActionPerformed
+
+    private void Cmb_FaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cmb_FaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Cmb_FaseActionPerformed
+
+    private void btnEminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEminarActionPerformed
+        FrmRegistrarFase pantalla = new FrmRegistrarFase();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEminarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIDActionPerformed
 
     private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
 
@@ -534,56 +552,46 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnUsuariosMouseClicked
 
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        this.Guardar();
-    }//GEN-LAST:event_btnRegistrarActionPerformed
+    private void btn_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarActionPerformed
+        this.Editar();
+        this.cargarTabla();
+        
+    }//GEN-LAST:event_btn_EditarActionPerformed
 
-    private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
-        DefaultTableModel model = (DefaultTableModel) tbl_Cliente.getModel();
-        String Nombre = model.getValueAt(tbl_Cliente.getSelectedRow(), 4).toString();
-        String Empresa = model.getValueAt(tbl_Cliente.getSelectedRow(), 1).toString();
-        txtNombre.setText(Nombre);
-        txtEmpresa.setText(Empresa);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    }//GEN-LAST:event_tbl_ClienteMouseClicked
+    private void tbl_CastingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_CastingMouseClicked
+        
+        DefaultTableModel model = (DefaultTableModel) tbl_Casting.getModel();
+        int CodigoCasting = Integer.parseInt(model.getValueAt(tbl_Casting.getSelectedRow(), 0).toString());
+        String NombreCasting = model.getValueAt(tbl_Casting.getSelectedRow(), 1).toString();
+        String CostoCasting = model.getValueAt(tbl_Casting.getSelectedRow(), 2).toString();
+        int FaseID = (Integer) model.getValueAt(tbl_Casting.getSelectedRow(), 3);
+        String DescripcionCasting = model.getValueAt(tbl_Casting.getSelectedRow(), 4).toString();
+        String FechaContratacion = model.getValueAt(tbl_Casting.getSelectedRow(), 5).toString();
+        String NombreEmpresa = model.getValueAt(tbl_Casting.getSelectedRow(), 6).toString();
+        System.out.println(FaseID);
+        System.out.println(CastingControl.BuscarID(FaseID));
+        txtID.setText(CodigoCasting+"");
+        txtNombre.setText(NombreCasting);
+        txtCosto.setText(CostoCasting);
+        Cmb_Fase.setSelectedItem(CastingControl.BuscarID(FaseID));
+        txtDescripcion.setText(DescripcionCasting);
+        txtFecha.setText(FechaContratacion);
+        txtEmpresa.setText(NombreEmpresa);
 
-    private void Cmb_FaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cmb_FaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Cmb_FaseActionPerformed
+    }//GEN-LAST:event_tbl_CastingMouseClicked
 
-    private void btnEminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEminarActionPerformed
-        FrmRegistrarFase pantalla = new FrmRegistrarFase();
-        pantalla.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnEminarActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    this.limpiarTextbox();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDActionPerformed
-
-    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaActionPerformed
-
-    private void ItemEditarCastingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemEditarCastingActionPerformed
-        EditarCasting  pantalla = new EditarCasting();
-        pantalla.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_ItemEditarCastingActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Fases> Cmb_Fase;
-    private javax.swing.JMenuItem ItemEditarCasting;
     private javax.swing.JButton btnEminar;
     private javax.swing.JMenu btnMenu;
-    private javax.swing.JButton btnRegistrar;
     private javax.swing.JMenu btnUsuarios;
     private javax.swing.JMenu btnVenta;
+    private javax.swing.JButton btn_Editar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -597,15 +605,17 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tbl_Cliente;
+    private javax.swing.JTable tbl_Casting;
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtEmpresa;
@@ -614,7 +624,8 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-    private void obtenerFaseID() {
+
+private void obtenerFaseID() {
         try {
             this.ClienteControl.crearConexion();
             DAO_Fases CbmFase = new DAO_Fases();
@@ -627,11 +638,4 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-
-    public static String FechaAtual() {
-        Date fecha = new Date();
-        SimpleDateFormat FechaFormato = new SimpleDateFormat("dd/MM/yyyy");
-        return FechaFormato.format(fecha);
-    }
-
 }

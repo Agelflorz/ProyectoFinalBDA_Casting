@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import ObjectoNegocios.Cliente;  
+import ObjectoNegocios.Cliente;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -29,6 +29,7 @@ public class DAO_Cliente implements IClientes {
 
     @Override
     public void agregar(Cliente cliente) {
+        crearConexion();
         BasicDBObject documento = new BasicDBObject();
         documento.put("idCliente", cliente.getIdCliente());
         documento.put("NombreEmpresa", cliente.getNombreEmpresa());
@@ -41,17 +42,19 @@ public class DAO_Cliente implements IClientes {
 
     @Override
     public void eliminar(int id) {
+        crearConexion();
         collection.remove(new BasicDBObject("idCliente", id));
     }
 
     @Override
     public List<Cliente> BuscarID(int id) {
+        crearConexion();
         BasicDBObject documento = (BasicDBObject) collection.findOne(new BasicDBObject("idCliente", id));
         if (documento != null) {
             List<Cliente> ListaCliente = new ArrayList<>();
             ListaCliente.add(
                     new Cliente(
-                            (int)    documento.get("idCliente"),
+                            (int) documento.get("idCliente"),
                             (String) documento.get("NombreEmpresa"),
                             (String) documento.get("Telefono"),
                             (String) documento.get("Direccion"),
@@ -66,6 +69,7 @@ public class DAO_Cliente implements IClientes {
 
     @Override
     public List<Cliente> MostrarTodas() {
+        crearConexion();
         List<Cliente> ListaCliente = new ArrayList<>();
         DBCursor cursor = collection.find();
         while (cursor.hasNext()) {
@@ -86,13 +90,14 @@ public class DAO_Cliente implements IClientes {
 
     @Override
     public void actualizar(Cliente ClientesActualizado) {
-   DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("idCliente", ClientesActualizado.getIdCliente()));
-        if (buscar!=null) {
+        crearConexion();
+        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("idCliente", ClientesActualizado.getIdCliente()));
+        if (buscar != null) {
             BasicDBObject valorCambiar = new BasicDBObject("NombreEmpresa", ClientesActualizado.getNombreEmpresa());
             BasicDBObject valorCambiar2 = new BasicDBObject("Telefono", ClientesActualizado.getTelefono());
             BasicDBObject valorCambiar3 = new BasicDBObject("Direccion", ClientesActualizado.getDireccion());
             BasicDBObject valorCambiar4 = new BasicDBObject("NombreContacto", ClientesActualizado.getNombreContacto());
-            
+
             BasicDBObject actualizaOperacion = new BasicDBObject("$set", valorCambiar);
             BasicDBObject actualizaOperacion2 = new BasicDBObject("$set", valorCambiar2);
             BasicDBObject actualizaOperacion3 = new BasicDBObject("$set", valorCambiar3);
@@ -102,12 +107,12 @@ public class DAO_Cliente implements IClientes {
             collection.update(buscar, actualizaOperacion2);
             collection.update(buscar, actualizaOperacion3);
             collection.update(buscar, actualizaOperacion4);
+        }
     }
-}
+
     @Override
     public void crearConexion() {
         MongoClient mongo = null;
-
         try {
             mongo = new MongoClient("localhost", 27017);
             System.out.println("Connected to the database successfully");
@@ -118,6 +123,7 @@ public class DAO_Cliente implements IClientes {
 
         }
     }
+
     public List<Cliente> BuscarIDCliente() {
         try {
             crearConexion();
@@ -134,6 +140,5 @@ public class DAO_Cliente implements IClientes {
         }
         return null;
     }
-
 
 }

@@ -54,6 +54,21 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
             });
         });
     }
+        public void Eliminar() {
+        int indice = this.tbl_Casting.getSelectedRow();
+        if (indice != -1) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) this.tbl_Casting.getModel();
+            int idCasting = (int) modeloTabla.getValueAt(indice, 0);
+            CastingControl.eliminar(idCasting);
+            JOptionPane.showMessageDialog(this, "El Casting se eliminó con exito.,",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Se debe seleccionar un elemento de la tabla,"
+                    + "por favor, seleccione una opción valida.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
 
     private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -85,11 +100,13 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_Casting = new javax.swing.JTable();
+        btn_Eliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
         btnVenta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        ItemEditarCasting2 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -110,8 +127,6 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         jLabel4.setText(" Casting Registrados");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Casting Registrados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
-
-        jScrollPane1.setBorder(null);
 
         tbl_Casting.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -153,22 +168,36 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        btn_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Delete.png"))); // NOI18N
+        btn_Eliminar.setText("Eliminar");
+        btn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 140, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addGap(450, 450, 450)
+                .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +206,9 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         btnMenu.setForeground(new java.awt.Color(153, 153, 255));
@@ -217,6 +248,15 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
             }
         });
         btnVenta.add(jMenuItem2);
+
+        ItemEditarCasting2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        ItemEditarCasting2.setText("Editar Casting");
+        ItemEditarCasting2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemEditarCasting2ActionPerformed(evt);
+            }
+        });
+        btnVenta.add(ItemEditarCasting2);
 
         jMenuBar1.add(btnVenta);
 
@@ -327,10 +367,25 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+    this.Eliminar();
+    this.cargarTabla();
+    }//GEN-LAST:event_btn_EliminarActionPerformed
+
+    private void ItemEditarCasting2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemEditarCasting2ActionPerformed
+        EditarCasting  pantalla = new EditarCasting();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ItemEditarCasting2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ItemEditarCasting;
+    private javax.swing.JMenuItem ItemEditarCasting1;
+    private javax.swing.JMenuItem ItemEditarCasting2;
     private javax.swing.JMenu btnMenu;
     private javax.swing.JMenu btnUsuarios;
     private javax.swing.JMenu btnVenta;
+    private javax.swing.JButton btn_Eliminar;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

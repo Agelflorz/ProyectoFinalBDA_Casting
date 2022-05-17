@@ -28,6 +28,7 @@ public class DAO_Fases implements IFases {
 
     @Override
     public void agregar(Fases Fase) {
+        crearConexion();
         BasicDBObject documento = new BasicDBObject();
         documento.put("idFases", Fase.getIdFases());
         documento.put("FechaFase", Fase.getFechaFase());
@@ -36,11 +37,13 @@ public class DAO_Fases implements IFases {
 
     @Override
     public void eliminar(int id) {
+        crearConexion();
         collection.remove(new BasicDBObject("idFases", id));
     }
 
     @Override
     public List<Fases> BuscarID(int id) {
+        crearConexion();
         BasicDBObject documento = (BasicDBObject) collection.findOne(new BasicDBObject("idFases", id));
         if (documento != null) {
             List<Fases> listaFase = new ArrayList<>();
@@ -57,24 +60,23 @@ public class DAO_Fases implements IFases {
     }
 
     public List<Fases> BuscarIDFase() {
-        try {
-            crearConexion();
-            BasicDBObject documento = (BasicDBObject) collection.findOne();
-            if (documento != null) {
-                List<Fases> listaFase = new ArrayList<>();
-                listaFase.add(
-                        new Fases(
-                                (int) documento.getInt("idFases")));
-                return listaFase;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+        crearConexion();
+        List<Fases> ListaFase = new ArrayList<>();
+        DBCursor cursor = collection.find();
+        while (cursor.hasNext()) {
+            DBObject obj = cursor.next();
+            ListaFase.add(
+                    new Fases(
+                            (int) obj.get("idFases")
+                    ));
         }
-        return null;
+
+        return ListaFase;
     }
 
     @Override
     public List<Fases> MostrarTodas() {
+        crearConexion();
         List<Fases> ListaFase = new ArrayList<>();
         DBCursor cursor = collection.find();
         while (cursor.hasNext()) {
@@ -91,6 +93,7 @@ public class DAO_Fases implements IFases {
 
     @Override
     public void actualizar(Fases FasesActualizado) {
+        crearConexion();
         DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("idFases", FasesActualizado.getIdFases()));
         if (buscar != null) {
             BasicDBObject valorCambiar = new BasicDBObject("idFases", FasesActualizado.getIdFases());
@@ -107,7 +110,6 @@ public class DAO_Fases implements IFases {
     @Override
     public void crearConexion() {
         MongoClient mongo = null;
-
         try {
             mongo = new MongoClient("localhost", 27017);
             System.out.println("Connected to the database successfully");
