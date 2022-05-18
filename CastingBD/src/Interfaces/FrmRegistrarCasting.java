@@ -99,11 +99,13 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             String Descripcion = this.txtDescripcion.getText();
             Fases Fase2 = (Fases) Cmb_Fase.getSelectedItem();
             int FaseID = Fase2.getIdFases();
-             Agentes Agente = (Agentes) cbm_Agente.getSelectedItem();
-             String NombreAgente = Agente.getNombre(); 
-            Casting CastingNew = new Casting(idCasting, NombreContacto, Costo, FaseID, Descripcion, FechaContratacion, Empresa,NombreAgente);
+            Agentes Agente = (Agentes) cbm_Agente.getSelectedItem();
+            String NombreAgente = Agente.getNombre(); 
+            String Tipo = txt_Tipo.getText();
+            Casting CastingNew2 = new Casting(idCasting, NombreContacto, Costo,  FaseID, Descripcion, FechaContratacion, Empresa,Tipo, NombreAgente);
+            
             if (comprobarCampos() == true) {
-                CastingControl.agregar(CastingNew);
+                CastingControl.agregar(CastingNew2);
                 JOptionPane.showMessageDialog(this, "Casting agregado con éxito",
                         "Notificación.", JOptionPane.INFORMATION_MESSAGE);
             } else {
