@@ -1,0 +1,1 @@
+{ "_id" : { "$oid" : "6283546855b9cbcf106cb951" }, "CodigoPerfil" : 1, "Estado" : "Sonora", "Sexo" : "Masculino", "RangoAltura" : 1.71, "Edad" : 21, "ColorCabello" : "Negro", "ColorOjos" : "Negros", "Especialidad" : "Modelo", "NombreCliente" : "Jammes pistolas", "TipoCasting" : "Virtual", "Experiencia" : "Si" }

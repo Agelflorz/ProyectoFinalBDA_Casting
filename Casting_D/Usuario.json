@@ -1,0 +1,4 @@
+{ "_id" : { "$oid" : "627b396b2b71dbe8f924c8a5" }, "ID" : 1, "Nombre" : "Agelflorz", "Contraseña" : "15429Flo" }
+{ "_id" : { "$oid" : "62834444e2e8a02de38f1f40" }, "ID" : 2, "Nombre" : "Jose", "Contraseña" : "123456" }
+{ "_id" : { "$oid" : "6283453a50834069a4150863" }, "ID" : 3, "Nombre" : "Eliu", "Contraseña" : "456789" }
+{ "_id" : { "$oid" : "628490ab7566b70f4203aca5" }, "ID" : 4, "Nombre" : "Eduardo", "Contraseña" : "123456" }

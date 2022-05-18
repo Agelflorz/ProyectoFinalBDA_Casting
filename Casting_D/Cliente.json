@@ -1,0 +1,1 @@
+{ "_id" : { "$oid" : "62809b7a2a535b2288b572e8" }, "idCliente" : 1, "NombreEmpresa" : "Marvel", "NombreContacto" : "Jammes", "Telefono" : "6444613145", "Direccion" : "Los angeles", "Actividad" : "Pelicula" }
