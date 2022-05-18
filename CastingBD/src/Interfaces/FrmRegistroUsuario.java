@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package Interfaces;
+
+import DAO.DAO_Casting;
+import DAO.DAO_Cliente;
+import DAO.DAO_Fases;
 import ObjectoNegocios.Usuario;
 import DAO.DAO_Usuario;
 import java.awt.Dimension;
@@ -11,12 +15,18 @@ import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author blude
  */
 public class FrmRegistroUsuario extends javax.swing.JFrame {
-  DAO_Usuario usuarioControl = new DAO_Usuario();
+
+    DAO_Usuario usuarioControl = new DAO_Usuario();
+    DAO_Casting CastingControl = new DAO_Casting();
+    DAO_Cliente ClienteControl = new DAO_Cliente();
+    DAO_Fases FaseControl = new DAO_Fases();
+
     /**
      * Creates new form FrmRegistroUsuario
      */
@@ -25,22 +35,23 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         cargarTabla();
         centrarVentana();
     }
+
     private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
-    
-     public void cargarTabla() {
+
+    public void cargarTabla() {
         this.usuarioControl.crearConexion();
         List<Usuario> list = this.usuarioControl.MostrarTodas();
         System.out.println(list);
@@ -50,12 +61,21 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         list.forEach(Usuario -> {
             model.addRow(new Object[]{
                 Usuario.getID(),
-                Usuario.getNombreUsuario(),
-                Usuario.getPassword(),
+                Usuario.getNombreUsuario(), //                Usuario.getPassword(),
             });
         });
     }
-     public void guardar() {
+    
+    public boolean comprobarCampos() {
+        if (this.txt_Contraseña.getText().isEmpty() == true || this.txt_Contraseña2.getText().isEmpty() == true
+                || this.txt_ID.getText().isEmpty() == true || this.txt_Nombre.getText().isEmpty() == true) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void guardar() {
         Usuario usuarioExist = new Usuario();
         int idUsuario = Integer.parseInt(this.txt_ID.getText());
         String nombreUsuario = this.txt_Nombre.getText();
@@ -63,7 +83,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         String confirmarContraseña = this.txt_Contraseña2.getText();
         boolean bandera = false;
         if (confirmarContraseña.equals(contraseña)) {
-            Usuario nuevoUsuario = new Usuario(idUsuario,nombreUsuario, contraseña);
+            Usuario nuevoUsuario = new Usuario(idUsuario, nombreUsuario, contraseña);
             for (int i = 0; i < tbl_Usuarios.getRowCount(); i++) {
                 if (nombreUsuario.equals(tbl_Usuarios.getValueAt(i, 0))) {
                     bandera = true;
@@ -71,19 +91,25 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 }
             }
             if (bandera == false) {
-                usuarioControl.agregar(nuevoUsuario);
-            JOptionPane.showMessageDialog(this, "Usuario agregado con éxito",
-                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                JOptionPane.showMessageDialog(this, "El usuario ya existe",
+                if (comprobarCampos() == true) {
+                    usuarioControl.agregar(nuevoUsuario);
+                    JOptionPane.showMessageDialog(this, "Usuario agregado con éxito",
                             "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Alguno de los campos esta vacío, porfavor verifique sus datos.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "El usuario ya existe",
+                        "Notificación.", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "La contraseña no coincide",
                     "Error.", JOptionPane.ERROR_MESSAGE);
         }
     }
-     public void editar() {
+
+    public void editar() {
         int indice = this.tbl_Usuarios.getSelectedRow();
         if (indice != -1) {
             DefaultTableModel modeloTabla = (DefaultTableModel) this.tbl_Usuarios.getModel();
@@ -94,7 +120,8 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
             usuario.setNombreUsuario(txt_Nombre.getText());
             usuario.setPassword(txt_Contraseña.getText());
         }
-    }    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,24 +138,15 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         txt_Nombre = new javax.swing.JTextField();
-        txt_Contraseña = new javax.swing.JTextField();
-        txt_Contraseña2 = new javax.swing.JTextField();
         txt_ID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        txt_Contraseña2 = new javax.swing.JPasswordField();
+        txt_Contraseña = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_Usuarios = new javax.swing.JTable();
         btn_Limpiar = new javax.swing.JButton();
         btn_Guardar = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        btnMenu = new javax.swing.JMenu();
-        btnVenta = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        btnUsuarios = new javax.swing.JMenu();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,12 +179,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_Contraseña2))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -175,11 +188,16 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_Nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(txt_Contraseña)
+                            .addComponent(txt_Nombre)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(txt_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txt_Contraseña)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_Contraseña2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -208,13 +226,18 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Usuario", "Contraseña"
+                "ID", "Usuario"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tbl_Usuarios);
-        if (tbl_Usuarios.getColumnModel().getColumnCount() > 0) {
-            tbl_Usuarios.getColumnModel().getColumn(0).setResizable(false);
-        }
 
         btn_Limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Limpiar.png"))); // NOI18N
         btn_Limpiar.setText("Limpiar");
@@ -227,20 +250,27 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
             }
         });
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
+                        .addComponent(btnVolver)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_Guardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_Limpiar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -261,94 +291,11 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn_Limpiar)
-                            .addComponent(btn_Guardar)))
+                            .addComponent(btn_Guardar)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        btnMenu.setForeground(new java.awt.Color(153, 153, 255));
-        btnMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pelicula (1).png"))); // NOI18N
-        btnMenu.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        btnMenu.setIconTextGap(1);
-        btnMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnMenuMouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(btnMenu);
-
-        btnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (5).png"))); // NOI18N
-        btnVenta.setText("Casting");
-        btnVenta.setIconTextGap(15);
-        btnVenta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnVentaMouseClicked(evt);
-            }
-        });
-
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
-        jMenuItem1.setText("Registrar ");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        btnVenta.add(jMenuItem1);
-
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (6).png"))); // NOI18N
-        jMenuItem2.setText("Perfil");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        btnVenta.add(jMenuItem2);
-
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/material (1).png"))); // NOI18N
-        jMenuItem3.setText("Mostrar Casting");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        btnVenta.add(jMenuItem3);
-
-        jMenuBar1.add(btnVenta);
-
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/avatar.png"))); // NOI18N
-        jMenu1.setText("Cliente");
-
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo.png"))); // NOI18N
-        jMenuItem4.setText("Registrar");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/material (1).png"))); // NOI18N
-        jMenuItem5.setText("Mostrar Clientes");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem5);
-
-        jMenuBar1.add(jMenu1);
-
-        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Empleados.png"))); // NOI18N
-        btnUsuarios.setText("Usuarios");
-        btnUsuarios.setIconTextGap(15);
-        btnUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnUsuariosMouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(btnUsuarios);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -364,55 +311,20 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuMouseClicked
-
-    }//GEN-LAST:event_btnMenuMouseClicked
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        FrmMostrarCasting pantalla = new FrmMostrarCasting();
-        pantalla.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
-
-    }//GEN-LAST:event_btnVentaMouseClicked
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        FrmRegistrarCliente pantalla = new FrmRegistrarCliente();
-        pantalla.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        FrmMostrarCliente pantalla = new FrmMostrarCliente();
-        pantalla.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void btnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseClicked
-
-    }//GEN-LAST:event_btnUsuariosMouseClicked
-
     private void btn_GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GuardarActionPerformed
-    this.guardar();
-    this.cargarTabla();
+        this.guardar();
+        this.cargarTabla();
     }//GEN-LAST:event_btn_GuardarActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+    Login Pantalla = new Login();
+    Pantalla.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu btnMenu;
-    private javax.swing.JMenu btnUsuarios;
-    private javax.swing.JMenu btnVenta;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JButton btn_Guardar;
     private javax.swing.JButton btn_Limpiar;
     private javax.swing.JLabel jLabel17;
@@ -420,19 +332,12 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_Usuarios;
-    private javax.swing.JTextField txt_Contraseña;
-    private javax.swing.JTextField txt_Contraseña2;
+    private javax.swing.JPasswordField txt_Contraseña;
+    private javax.swing.JPasswordField txt_Contraseña2;
     private javax.swing.JTextField txt_ID;
     private javax.swing.JTextField txt_Nombre;
     // End of variables declaration//GEN-END:variables

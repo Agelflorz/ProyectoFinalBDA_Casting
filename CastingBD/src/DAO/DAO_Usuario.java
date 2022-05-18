@@ -106,5 +106,20 @@ public class DAO_Usuario implements IUsuario {
             JOptionPane.showMessageDialog(null,"Error en la conexion"+ex.toString()); 
         }
     }
+
+    public List<Usuario> buscarUsuario(Usuario usuario1) {
+        collection = database.getCollection("Usuario");
+        BasicDBObject documento = (BasicDBObject) collection.findOne(new BasicDBObject("Usuario", usuario1.getNombreUsuario()));
+            if (documento != null) {
+                List<Usuario> lista = new ArrayList<>();
+                lista.add(new Usuario(
+                        documento.getString("Nombre"),
+                        documento.getString("Contraseña")));
+                return lista;
+            }
+        
+        return null;
+
+    }
     
 }

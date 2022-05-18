@@ -19,6 +19,7 @@ import DAO.DAO_Fases;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import ObjectoNegocios.Agentes;
 
 /**
  *
@@ -38,6 +39,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         centrarVentana();
         obtenerFaseID();
         cargarTabla();
+        obtenerAgente();
         txtFecha.setText(FechaAtual());
     }
     //Metodo para cargar la tabla
@@ -75,6 +77,16 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
+    
+    public boolean comprobarCampos() {
+        if (this.txtCosto.getText().isEmpty() == true || this.txtDescripcion.getText().isEmpty() == true
+                || this.txtEmpresa.getText().isEmpty() == true || this.txtFecha.getText().isEmpty() == true
+                || this.txtID.getText().isEmpty() == true || this.txtNombre.getText().isEmpty() == true) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public void Guardar() {
         try {
@@ -87,13 +99,26 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             String Descripcion = this.txtDescripcion.getText();
             Fases Fase2 = (Fases) Cmb_Fase.getSelectedItem();
             int FaseID = Fase2.getIdFases();
-            Casting CastingNew = new Casting(idCasting, NombreContacto, Costo, FaseID, Descripcion, FechaContratacion, Empresa);
-            CastingControl.agregar(CastingNew);
+             Agentes Agente = (Agentes) cbm_Agente.getSelectedItem();
+             String NombreAgente = Agente.getNombre(); 
+            Casting CastingNew = new Casting(idCasting, NombreContacto, Costo, FaseID, Descripcion, FechaContratacion, Empresa,NombreAgente);
+            if (comprobarCampos() == true) {
+                CastingControl.agregar(CastingNew);
+                JOptionPane.showMessageDialog(this, "Casting agregado con éxito",
+                        "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Alguno de los campos esta vacío, porfavor verifique sus datos.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e) {
             System.out.println(e);
         }
+       
 
     }
+    
+   
       public void limpiarTextbox() {
         txtID.setText("");
         txtEmpresa.setText("");
@@ -131,12 +156,17 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         txtID = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        txt_Tipo = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_Cliente = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        cbm_Agente = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
         btnVenta = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         ItemEditarCasting = new javax.swing.JMenuItem();
@@ -145,6 +175,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnUsuarios = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -219,6 +250,8 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
 
         jLabel10.setText("ID:");
 
+        jLabel11.setText("Tipo");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -232,28 +265,10 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel7))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(btnRegistrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(170, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEminar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtDescripcion))
-                        .addGap(33, 33, 33))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -273,7 +288,25 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(10, 10, 10))))
+                        .addGap(10, 10, 10))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEminar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel7))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(txt_Tipo)
+                                .addGap(29, 29, 29)
+                                .addComponent(btnRegistrar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDescripcion))
+                        .addGap(33, 33, 33))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,13 +317,13 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(25, 25, 25))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 11, Short.MAX_VALUE)
+                        .addGap(0, 24, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
@@ -311,16 +344,22 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(Cmb_Fase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEminar))
-                .addGap(16, 16, 16)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addGap(17, 17, 17))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(btnRegistrar))
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_Tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))))
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Clientes y Agentes Disponibles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Clientes  Disponibles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 255))); // NOI18N
 
         tbl_Cliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -370,18 +409,31 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         jLabel3.setText("© Derechos Reservados 2020 por MalumaSoft");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        jLabel12.setText("Nombre Agente:");
+
+        cbm_Agente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbm_AgenteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(97, 97, 97)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbm_Agente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(99, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -395,9 +447,13 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(cbm_Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addContainerGap())
         );
@@ -411,6 +467,15 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 btnMenuMouseClicked(evt);
             }
         });
+
+        jMenuItem6.setText("Regresar");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        btnMenu.add(jMenuItem6);
+
         jMenuBar1.add(btnMenu);
 
         btnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (5).png"))); // NOI18N
@@ -482,6 +547,16 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
                 btnUsuariosMouseClicked(evt);
             }
         });
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        jMenuItem7.setText("RegistrarUsuario");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        btnUsuarios.add(jMenuItem7);
+
         jMenuBar1.add(btnUsuarios);
 
         setJMenuBar(jMenuBar1);
@@ -494,7 +569,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
         );
 
         pack();
@@ -505,7 +580,9 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuMouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
+    FrmRegistroPerfil pantalla = new FrmRegistroPerfil();
+    pantalla.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -576,6 +653,22 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_ItemEditarCastingActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        FrmRegistroUsuario  pantalla = new FrmRegistroUsuario();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        FrmMenu pantalla = new FrmMenu();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void cbm_AgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbm_AgenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbm_AgenteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Fases> Cmb_Fase;
     private javax.swing.JMenuItem ItemEditarCasting;
@@ -584,9 +677,12 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JMenu btnUsuarios;
     private javax.swing.JMenu btnVenta;
+    private javax.swing.JComboBox<Agentes> cbm_Agente;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -601,6 +697,8 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -612,6 +710,7 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txt_Tipo;
     // End of variables declaration//GEN-END:variables
 
     private void obtenerFaseID() {
@@ -627,6 +726,21 @@ public class FrmRegistrarCasting extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
+    
+     private void obtenerAgente() {
+        try {
+            this.ClienteControl.crearConexion();
+            DAO_Casting CbmAgente = new DAO_Casting();
+            System.out.println(CbmAgente.BuscarAgente());
+            List<Agentes> ListaAgente = CbmAgente.BuscarAgente();
+            for (Agentes f : ListaAgente) {
+                cbm_Agente.addItem(f);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+ 
 
     public static String FechaAtual() {
         Date fecha = new Date();

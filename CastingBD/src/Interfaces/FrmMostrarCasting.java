@@ -49,8 +49,9 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
                 Casting.getFases(),
                 Casting.getDescripcionCasting(),
                 Casting.getFechaConstratacion(),
-                Casting.getNombreEmpresa()
-
+                Casting.getNombreEmpresa(),
+                Casting.getTipo(),
+                Casting.getNombreAgente()
             });
         });
     }
@@ -103,6 +104,7 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         btn_Eliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
+        jMenuItem19 = new javax.swing.JMenuItem();
         btnVenta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -111,6 +113,7 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnUsuarios = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -133,14 +136,14 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CodigoCasting", "Nombre Casting", "Costo Casting", "Fase", "Descripcion", "Fecha Contratacion", "Empresa"
+                "CodigoCasting", "Nombre Casting", "Costo Casting", "Fase", "Descripcion", "Fecha Contratacion", "Empresa", "Tipo", "NombreAgentel"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -220,6 +223,15 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
                 btnMenuMouseClicked(evt);
             }
         });
+
+        jMenuItem19.setText("Regresar");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        btnMenu.add(jMenuItem19);
+
         jMenuBar1.add(btnMenu);
 
         btnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (5).png"))); // NOI18N
@@ -291,6 +303,16 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
                 btnUsuariosMouseClicked(evt);
             }
         });
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        jMenuItem7.setText("RegistrarUsuario");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        btnUsuarios.add(jMenuItem7);
+
         jMenuBar1.add(btnUsuarios);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/artboard-10_89054 (1).png"))); // NOI18N
@@ -340,7 +362,9 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
+    FrmRegistroPerfil pantalla = new FrmRegistroPerfil();
+    pantalla.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
@@ -348,7 +372,9 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVentaMouseClicked
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-;
+        FrmRegistrarCliente Pantalla = new FrmRegistrarCliente();
+        Pantalla.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -378,9 +404,19 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_ItemEditarCasting2ActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        FrmRegistroUsuario  pantalla = new FrmRegistroUsuario();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        FrmMenu pantalla = new FrmMenu();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem ItemEditarCasting;
-    private javax.swing.JMenuItem ItemEditarCasting1;
     private javax.swing.JMenuItem ItemEditarCasting2;
     private javax.swing.JMenu btnMenu;
     private javax.swing.JMenu btnUsuarios;
@@ -391,10 +427,12 @@ public class FrmMostrarCasting extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

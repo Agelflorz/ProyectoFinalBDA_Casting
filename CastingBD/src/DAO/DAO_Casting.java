@@ -17,6 +17,7 @@ import com.mongodb.MongoException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import ObjectoNegocios.Agentes;
 
 /**
  *
@@ -38,6 +39,8 @@ public class DAO_Casting implements ICasting{
         documento.put("DescripcionCasting", CastinNew.getDescripcionCasting());
         documento.put("FechaContratacion", CastinNew.getFechaConstratacion());
         documento.put("NombreEmpresa", CastinNew.getNombreEmpresa());
+        documento.put("Tipo", CastinNew.getTipo());
+        documento.put("NombreAgente", CastinNew.getNombreAgente());
         collection.insert(documento);
     }
 
@@ -75,7 +78,9 @@ public class DAO_Casting implements ICasting{
                             (int) obj.get("Fase"),
                             (String) obj.get("DescripcionCasting"),
                             (String) obj.get("FechaContratacion"),
-                            (String) obj.get("NombreEmpresa"))
+                            (String) obj.get("NombreEmpresa"),
+                            (String) obj.get("Tipo"),
+                            (String) obj.get("NombreAgente"))
 
             );
         }
@@ -98,6 +103,7 @@ public class DAO_Casting implements ICasting{
         documentoNuevo.put("DescripcionCasting", CastingActualizado.getDescripcionCasting());
         documentoNuevo.put("FechaContratacion", CastingActualizado.getFechaConstratacion());
         documentoNuevo.put("NombreEmpresa", CastingActualizado.getNombreEmpresa());
+        documentoNuevo.put("NombreAgente", CastingActualizado.getNombreAgente());
         }
         
 //        DBObject buscar = (DBObject) collection.findOne(new BasicDBObject("CodigoCasting", CastingActualizado.getCodigoCasting()));
@@ -127,9 +133,6 @@ public class DAO_Casting implements ICasting{
 //            collection.update(buscar, actualizaOperacion6);
             
         }
-    
-
-
     @Override
     public void crearConexion() {
       MongoClient mongo = null;
@@ -143,8 +146,35 @@ public class DAO_Casting implements ICasting{
             JOptionPane.showMessageDialog(null, "Error en la conexion" + ex.toString());
 
         }
+    }
+     public void crearConexionAgente() {
+      MongoClient mongo = null;
 
+        try {
+            mongo = new MongoClient("localhost", 27017);
+            System.out.println("Connected to the database successfully");
+            database = mongo.getDB("Casting_D");
+            collection = database.getCollection("Agentes");
+        } catch (MongoException ex) {
+            JOptionPane.showMessageDialog(null, "Error en la conexion" + ex.toString());
 
+        }
+    }
+     public List<Agentes> BuscarAgente() {
+     try {
+            crearConexionAgente();
+            BasicDBObject documento = (BasicDBObject) collection.findOne();
+            if (documento != null) {
+                List<Agentes> ListaAgente = new ArrayList<>();
+                ListaAgente.add(
+                        new Agentes(
+                                (String) documento.getString("Nombre")));
+                return ListaAgente;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
     
 }

@@ -140,5 +140,20 @@ public class DAO_Cliente implements IClientes {
         }
         return null;
     }
-
+     public List<Cliente> BuscarCliente() {
+     try {
+            crearConexion();
+            BasicDBObject documento = (BasicDBObject) collection.findOne();
+            if (documento != null) {
+                List<Cliente> listaFase = new ArrayList<>();
+                listaFase.add(
+                        new Cliente(
+                                (String) documento.getString("NombreContacto")));
+                return listaFase;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

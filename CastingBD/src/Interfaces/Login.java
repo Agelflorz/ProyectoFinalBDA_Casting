@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package Interfaces;
+
 import Interfaces.FrmMenu;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import DAO.DAO_Usuario;
 import ObjectoNegocios.Usuario;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author blude y spide
@@ -17,6 +19,7 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
 
     public static String nombreUsuario;
+
     /**
      * Creates new form Login
      */
@@ -24,20 +27,22 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         centrarVentana();
     }
-        private void centrarVentana() {
+
+    private void centrarVentana() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
-        
+
         if (frameSize.height > screenSize.height) {
             frameSize.height = screenSize.height;
         }
         if (frameSize.width > screenSize.width) {
             frameSize.width = screenSize.width;
         }
-        
+
         setLocation((screenSize.width - frameSize.width) / 2,
                 (screenSize.height - frameSize.height) / 2);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +60,7 @@ public class Login extends javax.swing.JFrame {
         txt_Usuario = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -81,16 +87,20 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setForeground(new java.awt.Color(51, 51, 255));
+        jButton2.setText("Registrar Usuario");
+        jButton2.setBorder(null);
+        jButton2.setContentAreaFilled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(82, 82, 82))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -98,10 +108,22 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
                     .addComponent(txt_Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(82, 82, 82))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(107, 107, 107))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,7 +142,9 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -138,25 +162,30 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- 
+
         nombreUsuario = txt_Usuario.getText();
         DAO_Usuario usuario = new DAO_Usuario();
         usuario.crearConexion();
         Usuario usuario1 = new Usuario(nombreUsuario, txtContraseña.getText());
         usuario.BuscarID(usuario1);
-//        if (usuario.BuscarID(usuario1)!=null) {
+        usuario.buscarUsuario(usuario1);
+        if (usuario.BuscarID(usuario1)!=null) {            
             FrmMenu menu = new FrmMenu();
             menu.setVisible(true);
             this.dispose();
-//        }else {
-//            JOptionPane.showMessageDialog(null, "Usuario Incorrecto");
-//        }  if (txt_Usuario.getText().equals("") || txtContraseña.getText().equals("")) {
-//            JOptionPane.showMessageDialog(null, "Error campos vacios");
-//        }
+        }else {
+            JOptionPane.showMessageDialog(null, "Usuario Incorrecto");
+        }if (txt_Usuario.getText().equals("") || txtContraseña.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Error campos vacios");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
-    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        FrmRegistroUsuario pantalla = new FrmRegistroUsuario();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -194,6 +223,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

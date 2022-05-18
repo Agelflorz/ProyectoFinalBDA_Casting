@@ -10,23 +10,22 @@ package ObjectoNegocios;
  * @author blude
  */
 public class PerfilCasting {
-    String CodigoPerfil;
+    int CodigoPerfil;
     String Estado;
-    Enum Sexo;
-    float RangoAltura;
+    String Sexo;
+    double RangoAltura;
     int Edad;
     String ColorCabello;
     String ColorOjos;
     String Especialidad;
     String NombreCliente;
-    String NombreAgente;
     String TipoCasting;
-    boolean Experiencia;
+    String Experiencia;
 
     public PerfilCasting() {
     }
 
-    public PerfilCasting(String CodigoPerfil, String Estado, Enum Sexo, float RangoAltura, int Edad, String ColorCabello, String ColorOjos, String Especialidad, String NombreCliente, String NombreAgente, String TipoCasting, boolean Experiencia) {
+    public PerfilCasting(int CodigoPerfil, String Estado, String Sexo, double RangoAltura, int Edad, String ColorCabello, String ColorOjos, String Especialidad, String NombreCliente,  String TipoCasting, String Experiencia) {
         this.CodigoPerfil = CodigoPerfil;
         this.Estado = Estado;
         this.Sexo = Sexo;
@@ -36,16 +35,15 @@ public class PerfilCasting {
         this.ColorOjos = ColorOjos;
         this.Especialidad = Especialidad;
         this.NombreCliente = NombreCliente;
-        this.NombreAgente = NombreAgente;
         this.TipoCasting = TipoCasting;
         this.Experiencia = Experiencia;
     }
 
-    public String getCodigoPerfil() {
+    public int getCodigoPerfil() {
         return CodigoPerfil;
     }
 
-    public void setCodigoPerfil(String CodigoPerfil) {
+    public void setCodigoPerfil(int CodigoPerfil) {
         this.CodigoPerfil = CodigoPerfil;
     }
 
@@ -57,19 +55,19 @@ public class PerfilCasting {
         this.Estado = Estado;
     }
 
-    public Enum getSexo() {
+    public String getSexo() {
         return Sexo;
     }
 
-    public void setSexo(Enum Sexo) {
+    public void setSexo(String Sexo) {
         this.Sexo = Sexo;
     }
 
-    public float getRangoAltura() {
+    public double getRangoAltura() {
         return RangoAltura;
     }
 
-    public void setRangoAltura(float RangoAltura) {
+    public void setRangoAltura(double RangoAltura) {
         this.RangoAltura = RangoAltura;
     }
 
@@ -113,14 +111,6 @@ public class PerfilCasting {
         this.NombreCliente = NombreCliente;
     }
 
-    public String getNombreAgente() {
-        return NombreAgente;
-    }
-
-    public void setNombreAgente(String NombreAgente) {
-        this.NombreAgente = NombreAgente;
-    }
-
     public String getTipoCasting() {
         return TipoCasting;
     }
@@ -129,17 +119,17 @@ public class PerfilCasting {
         this.TipoCasting = TipoCasting;
     }
 
-    public boolean isExperiencia() {
+    public String getExperiencia() {
         return Experiencia;
     }
 
-    public void setExperiencia(boolean Experiencia) {
+    public void setExperiencia(String Experiencia) {
         this.Experiencia = Experiencia;
     }
 
     @Override
     public String toString() {
-        return "PerfilCasting{" + "CodigoPerfil=" + CodigoPerfil + ", Estado=" + Estado + ", Sexo=" + Sexo + ", RangoAltura=" + RangoAltura + ", Edad=" + Edad + ", ColorCabello=" + ColorCabello + ", ColorOjos=" + ColorOjos + ", Especialidad=" + Especialidad + ", NombreCliente=" + NombreCliente + ", NombreAgente=" + NombreAgente + ", TipoCasting=" + TipoCasting + ", Experiencia=" + Experiencia + '}';
+        return "PerfilCasting{" + "CodigoPerfil=" + CodigoPerfil + ", Estado=" + Estado + ", Sexo=" + Sexo + ", RangoAltura=" + RangoAltura + ", Edad=" + Edad + ", ColorCabello=" + ColorCabello + ", ColorOjos=" + ColorOjos + ", Especialidad=" + Especialidad + ", NombreCliente=" + NombreCliente + ", TipoCasting=" + TipoCasting + ", Experiencia=" + Experiencia + '}';
     }
     
     

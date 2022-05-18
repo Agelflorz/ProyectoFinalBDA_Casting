@@ -31,7 +31,10 @@ public class Cliente {
 
     public Cliente(int idCliente) {
     this.idCliente = idCliente;
-
+    }
+    
+    public Cliente(String NombreContacto) {
+    this.NombreContacto = NombreContacto;
     }
 
     public int getIdCliente() {
@@ -84,7 +87,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "idCliente=" + idCliente + ", NombreEmpresa=" + NombreEmpresa + ", Telefono=" + Telefono + ", Direccion=" + Direccion + ", NombreContacto=" + NombreContacto + ", ActividadCliente=" + ActividadCliente + '}';
+        return  ""+NombreContacto;
     }
     
 }

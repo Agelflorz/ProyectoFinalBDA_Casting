@@ -66,13 +66,27 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                 Fase.getFechaFase(),});
         });
     }
+    
+    public boolean comprobarCampos() {
+        if (this.txt_FaseFecha.getText().isEmpty() == true || this.txt_Fases.getText().isEmpty() == true) {
+            return false;
+        }
+        return true;
+    }
 
     //Metodo Guardar Fase
     public void Guardar() {
         int idFase = Integer.parseInt(this.txt_Fases.getText());
         String Fecha = txt_FaseFecha.getText();
         Fases FaseNew = new Fases(idFase, Fecha);
-        FaseControl.agregar(FaseNew);
+        if (comprobarCampos() == true) {
+            FaseControl.agregar(FaseNew);
+            JOptionPane.showMessageDialog(this, "Fase agregada con éxito",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Alguno de los campos esta vacío, porfavor verifique sus datos.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     //Metodo para elimnar Fase
@@ -155,6 +169,7 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnUsuarios = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -440,6 +455,16 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
                 btnUsuariosMouseClicked(evt);
             }
         });
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        jMenuItem7.setText("RegistrarUsuario");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        btnUsuarios.add(jMenuItem7);
+
         jMenuBar1.add(btnUsuarios);
 
         setJMenuBar(jMenuBar1);
@@ -491,7 +516,9 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
+    FrmRegistroPerfil pantalla = new FrmRegistroPerfil();
+    pantalla.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -556,6 +583,12 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_ItemEditarCastingActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        FrmRegistroUsuario  pantalla = new FrmRegistroUsuario();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ItemEditarCasting;
@@ -578,6 +611,7 @@ public class FrmRegistrarFase extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

@@ -136,6 +136,7 @@ public class EditarCasting extends javax.swing.JFrame {
         tbl_Casting = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenu = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
         btnVenta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -393,7 +394,7 @@ public class EditarCasting extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         btnMenu.setForeground(new java.awt.Color(153, 153, 255));
@@ -405,6 +406,15 @@ public class EditarCasting extends javax.swing.JFrame {
                 btnMenuMouseClicked(evt);
             }
         });
+
+        jMenuItem8.setText("Regresar");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        btnMenu.add(jMenuItem8);
+
         jMenuBar1.add(btnMenu);
 
         btnVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/personas (5).png"))); // NOI18N
@@ -488,9 +498,7 @@ public class EditarCasting extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
         );
 
         pack();
@@ -584,6 +592,12 @@ public class EditarCasting extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tbl_CastingMouseClicked
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        FrmMenu pantalla = new FrmMenu();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Fases> Cmb_Fase;
@@ -610,6 +624,9 @@ public class EditarCasting extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;

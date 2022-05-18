@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface IPerfilCasting {
     
-    public void agregar(PerfilCasting cliente);
+    public void agregar(PerfilCasting perfil);
 
     public void eliminar(int id);
 
@@ -22,7 +22,7 @@ public interface IPerfilCasting {
 
     List<PerfilCasting> MostrarTodas();
 
-    public void actualizar(PerfilCasting PerfilActualizado);
+    public void actualizar(PerfilCasting perfilActualizado);
     
     public void crearConexion();
 }

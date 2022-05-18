@@ -68,9 +68,20 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
             });
         });
     }
+    
+    public boolean comprobarCampos() {
+        if (this.txtActividad.getText().isEmpty() == true
+                || this.txtContacto.getText().isEmpty() == true || this.txtDireccion.getText().isEmpty() == true || this.txtEmpresa.getText().isEmpty() == true
+                || this.txtID.getText().isEmpty() == true || this.txtTelefono.getText().isEmpty() == true) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     //Metodo Guardar Cliente
     public void Guardar() {
+        boolean bandera = false;
         int idCliente = Integer.parseInt(this.txtID.getText());
         String NombreEmpresa = this.txtEmpresa.getText();
         String telefono = this.txtTelefono.getText();
@@ -78,8 +89,25 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         String NombreContacto = this.txtContacto.getText();
         String ActividadCliente = this.txtActividad.getText();
         Cliente ClienteNew = new Cliente(idCliente, NombreEmpresa, telefono, Direccion, NombreContacto, ActividadCliente);
-        ClienteControl.agregar(ClienteNew);
-
+        for (int i = 0; i < tbl_Cliente.getRowCount(); i++) {
+            if (NombreContacto.equals(tbl_Cliente.getValueAt(i, 0))) {
+                bandera = true;
+                break;
+            }
+        }
+        if (bandera == false) {
+            if (comprobarCampos() == true) {
+                ClienteControl.agregar(ClienteNew);
+                JOptionPane.showMessageDialog(this, "Cliente agregado con éxito",
+                        "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Alguno de los campos esta vacío, porfavor verifique sus datos.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El cliente ya existe",
+                    "Notificación.", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     //Metodo para elimnar Cliente
@@ -204,6 +232,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnUsuarios = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -549,6 +578,16 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
                 btnUsuariosMouseClicked(evt);
             }
         });
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Usuario.png"))); // NOI18N
+        jMenuItem7.setText("RegistrarUsuario");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        btnUsuarios.add(jMenuItem7);
+
         menuBar.add(btnUsuarios);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/artboard-10_89054 (1).png"))); // NOI18N
@@ -651,7 +690,9 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
+    FrmRegistroPerfil pantalla = new FrmRegistroPerfil();
+    pantalla.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -701,6 +742,12 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_ItemEditarCastingActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        FrmRegistroUsuario  pantalla = new FrmRegistroUsuario();
+        pantalla.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ItemEditarCasting;
@@ -728,6 +775,7 @@ public class FrmRegistrarCliente extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

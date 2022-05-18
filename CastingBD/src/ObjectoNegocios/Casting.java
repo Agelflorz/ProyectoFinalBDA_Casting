@@ -19,8 +19,48 @@ public class Casting {
     String DescripcionCasting;
     String FechaConstratacion;
     String NombreEmpresa;
+    String Tipo;
+    String NombreAgente;
+
+    public Casting(int CodigoCasting, String NombreCasting, int costoCasting, int Fases, String DescripcionCasting, String FechaConstratacion, String NombreEmpresa, String Tipo, String NombreAgente) {
+        this.CodigoCasting = CodigoCasting;
+        this.NombreCasting = NombreCasting;
+        this.costoCasting = costoCasting;
+        this.Fases = Fases;
+        this.DescripcionCasting = DescripcionCasting;
+        this.FechaConstratacion = FechaConstratacion;
+        this.NombreEmpresa = NombreEmpresa;
+        this.Tipo = Tipo;
+        this.NombreAgente = NombreAgente;
+    }
+    public String getNombreAgente() {
+        return NombreAgente;
+    }
+
+    public void setNombreAgente(String NombreAgente) {
+        this.NombreAgente = NombreAgente;
+    }
     
 
+    public String getTipo() {
+        return Tipo;
+    }
+
+    public void setTipo(String Tipo) {
+        this.Tipo = Tipo;
+    }
+
+    public Casting(int CodigoCasting, String NombreCasting, int costoCasting, int Fases, String DescripcionCasting, String FechaConstratacion, String NombreEmpresa, String Tipo) {
+        this.CodigoCasting = CodigoCasting;
+        this.NombreCasting = NombreCasting;
+        this.costoCasting = costoCasting;
+        this.Fases = Fases;
+        this.DescripcionCasting = DescripcionCasting;
+        this.FechaConstratacion = FechaConstratacion;
+        this.NombreEmpresa = NombreEmpresa;
+        this.Tipo = Tipo;
+    }
+    
     public Casting() {
     }
 
@@ -45,6 +85,8 @@ public class Casting {
         this.DescripcionCasting = DescripcionCasting;
         this.FechaConstratacion = FechaConstratacion;
         this.NombreEmpresa = NombreEmpresa;
+      
+
     }
 
     public int getCodigoCasting() {
